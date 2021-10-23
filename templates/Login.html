@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Login Acuariofilia</title>
+    <link href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+    <!--sb-admin-2.min  login_style -->
+</head>
+{% block contenido %}
+    <body class="bg-gradient-primary">
+        <br><br>
+        <div class="container">
+            <!-- Outer Row -->
+            <div class="justify-center">
+                <div class="col-xl-10 col-lg-12 col-md-9">
+                    <div class="card o-hidden border-0 shadow-lg my-5">
+                        <div class="card-body p-0">
+                            <!-- Nested Row within Card Body -->
+                            <div class="row">
+                                <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                                    <div class="box">
+                                        <div class="circle" style="--i:0;"></div>
+                                        <div class="circle" style="--i:1;"></div>
+                                        <div class="circle" style="--i:2;"></div>
+                                        <div class="circle" style="--i:3;"></div>
+                                        <div class="circle" style="--i:4;"></div>
+                                    
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="p-5">
+                                        <div class="text-center">
+                                            <h1 class="h4 text-gray-900 mb-4">Acuariofilia - Inicio de Sesion</h1>
+                                        </div>
+                                        <form class="user" action="" method="post"  >
+                                            {{ form.csrf_token }}
+                                            <div class="form-group">
+                                                {{ form.email(class_="form-control form-control-user") }}
+                                                    
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form.password(class_="form-control form-control-user") }}
+                                                   
+                                            </div>
+                                            {% with mensajes = get_flashed_messages() %}
+                                                {% if mensajes %}
+                                                    {% for mensaje in mensajes %}
+                                                        {{mensaje}}
+                                                    {% endfor %}                                      
+                                                {% endif %}
+                                            {% endwith %}
+                                            <input type="submit" id="Iniciar sesión" value="Iniciar sesión" href="/feed"
+                                                class="btn btn-primary btn-user btn-block" />
+
+                                        </form>
+                                        <div class="text-center">
+                                            <a class="small" href="/recordarpassword">Olvidaste tu cuenta?</a>
+                                        </div>
+                                        <hr>
+                                        <a href="/registro" class="btn btn-success btn-user btn-block">
+                                            Registrarme
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+{% endblock %}
+</html>

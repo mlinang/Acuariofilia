@@ -1,0 +1,74 @@
+{% extends 'layout.html' %} {% block body %}
+<h1 class="text-center mb-4">Productos</h1>
+<div class="container">
+  {% for msg in get_flashed_messages() %}
+  <p class="text-center col-sm-5 m-auto bg-success text-white">{{msg}}</p>
+  {% endfor %}
+  <a class="btn btn-success mb-4" href="{{ url_for('addProduct')}}"
+    >Agregar producto</a
+  >
+  <table class="table table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Código</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+        <th>Imagen</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for pub in posts %}
+      <tr>
+        <td>{{pub[0]}}</td>
+        <td>{{pub[1]}}</td>
+        <td>{{pub[2]}}</td>
+        <td>{{pub[3]}}</td>
+        <td>{{pub[4]}}</td>
+        <td>
+          <img
+            src="static/images/Post/{{pub[1]}}"
+            alt=""
+            style="width: 20px"
+          />
+        </td>
+        {% if prod[6] == "Activo" %}
+        <td><button class="btn btn-outline-success">{{prod[5]}}</button></td>
+        {% else %}
+        <td><button class="btn btn-outline-danger">{{prod[5]}}</button></td>
+        {% endif %}
+        <td>
+          <a
+            class="btn btn-info"
+            href="{{ url_for('editProduct', id = prod[0]) }}"
+            >Editar</a
+          >
+          <a
+            class="btn btn-danger delete"
+            href="{{ url_for('deleteProduct', id = prod[0]) }}"
+            >Eliminar</a
+          >
+        </td>
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+  const btnDelete = document.querySelectorAll(".delete");
+  if (btnDelete) {
+    const btnArray = Array.from(btnDelete);
+    btnArray.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        if (!confirm("Estás seguro que deseas eliminar este registro?")) {
+          e.preventDefault();
+        }
+      });
+    });
+  }
+</script>
+{% endblock %}

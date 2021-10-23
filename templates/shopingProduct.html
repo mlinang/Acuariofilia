@@ -1,0 +1,35 @@
+{% extends 'layout.html' %} 
+
+{% block body %}
+<div class="container d-flex justify-content-center flex-wrap">
+  {% for prod in products %}
+  <div class="card m-2" style="width: 18rem">
+    <img src="static/images/products/{% print(prod[5]) %}" class="card-img-top" alt="..." style="width: 17.9rem; height: 18rem"/>
+    <div class="card-body">
+      <h5 class="card-title">{% print(prod[1]) %}</h5>
+      <p class="card-text">
+        {% print(prod[2]) %}
+      </p>
+      <p class="card-text">
+        Stock: {% print(prod[4]) %}
+      </p>
+      <p class="card-text">
+        {% print("${:,.0f}".format(prod[3])) %}
+      </p>
+      <a href="{{url_for('product', codigo = prod[0]) }}" class="btn btn-primary">Comprar</a>
+    </div>
+  </div>  
+  {% endfor %}
+  <form action="">
+    <label for="">Comentarios</label>
+    <textarea name="" id="" cols="30" rows="10"></textarea>
+    <label for="">calificación</label>
+    <select name="" id="">
+      <option value="">1</option>
+      <option value="">2</option>
+    </select>
+  </form>
+</div>
+
+
+{% endblock %}

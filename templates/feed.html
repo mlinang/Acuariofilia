@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./static/css/stylefeed.css">
+    <script src="https://kit.fontawesome.com/6880bc3485.js" crossorigin="anonymous"></script>
+    <link href="./static/css/sb-admin-2.min.css" rel="stylesheet">
+    <title>AcuarioFilia</title>
+</head>
+{% block body %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+        <a class="navbar-brand" href="#">ACUARIOFILIA</a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+            
+            {% if session['rol'] == 1 or session['rol'] == 2 %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{'perfil'}}">Perfil</a>
+            </li>    
+            {% endif %}    
+            {% if session['rol'] == 2 %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{'Dasboard'}}">Dashboard</a>
+            </li>
+            {% endif %} 
+            </ul>
+            <div class="ms-auto">
+                {% if 'id' in session %}
+                    <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
+                    <span class="navbar-text p-2 bd-highlight"> <a href="{{'logout'}}">Logout</a> </span>
+                {% else %}
+                    <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
+                    <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span>
+                {% endif %}            
+            </div>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success bg-primary" type="submit">Search</button>
+              </form>
+           
+        </div>
+        </div>
+    </nav>
+            <div class="container-fluid contenedor">
+                
+                <div class=logo>
+                    <img src="../static/img/logo.jpg" alt="logo.jpg" width="50%">
+                </div>
+                <div class="estado">
+                    
+                    <textarea name="nombre" id="nombre" >¿Quieres contarnos algo?</textarea>
+                    <div class="cargarimagen">
+                        <div class="cargar">
+                                                      
+                        <a href="{{url_for('addPost') }}">
+                            <i class="far fa-images" id="imagen" name="imagen" icon> +</i>
+                         </a>
+                        </div>
+                        <div class="enviar">
+                            <i class="far fa-paper-plane"> Enviar</i>
+                        </div>
+                        
+                    </div>
+            
+                </div>
+                <div class="busqueda">
+                    <input type="text" name="busqueda" pattern="[A-Za-z0-9]{8,20}" required  placeholder="Busca en Acuariofilia" >
+                    <i class="fas fa-search" icon></i>
+                </div>
+                <nav class="menu">
+                    <ul>
+                        <!--  <button type="button" class="fas fa-home opciones">Inicio</button> -->
+                        <li class="fas fa-home " > <a href="perfil.html">Inicio</a></li>
+                        <li class="fas fa-binoculars"> <a href="search.html">Explora</a></li> 
+                        <li class="fas fa-users"> Amigos</li> 
+                        <li class="fas fa-bullhorn"> Notificaciones</li> 
+                        <li class="far fa-envelope"> Mensajes</li> 
+                        <li class="fas fa-cogs"> <a href="dashboard.html"> Administra </a></li> 
+                    </ul>
+                </nav>
+                <main class=" container mis-publicaciones">
+                    <h1>Mis Publicaciones</h1>
+                    <div class = "contenedor-publicaciones">
+                        <div class="container d-flex justify-content-center flex-wrap">
+                            {% for pub in posts %}
+                            <div class="post-comment justify-content-center" style="width: 18rem">
+                                <a href="{{url_for('postdetail', codigo = pub[0]) }}">
+                                    <img src="static/images/post/{% print(pub[1]) %}"  alt="Card image cap">
+                                 </a>
+                                
+                                 
+                                <div class="card-body justify-content-center">
+                                <h5 class="card-title">{% print(pub[2]) %}</h5>
+                                <p class="card-text">
+                                  {% print(pub[3]) %}
+                                </p>
+                                {% print(pub[4]) %}
+                                <i href="{{url_for('postdetail', codigo = pub[0]) }}" class="far fa-thumbs-up"> Like</i>
+                                
+                              </div>
+                            </div>
+                            {% endfor %}    
+                          </div>
+                        </div> 
+                    </div>
+    
+                </main>
+                <div class="novedades">
+                    <h1>Novedades</h1>
+                    <div class="novedad">
+                        <h2 class="titulo">Aenean magna neque, aliquam vel pretium at</h2>
+                        <p class="texto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id faucibus libero. Duis faucibus, lacus eget tempus posuere, urna arcu mollis arcu, non semper turpis lacus elementum odio. </p>
+                        <div class="imagen-publicada">
+                            <img src="./static/img/ACUARIO.jpg" alt="" height="200">
+                        </div>
+                        <div class="botones">
+                            <button role="button" class="comentario"><i class="fas fa-comment"></i> 100</button>
+                            <button role="button" class="favoritos"><i class="fas fa-heart"></i> 100</button>
+                            <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
+                        </div>
+                    </div>
+                    <div class="novedad">
+                        <h2 class="titulo">Aenean magna neque, aliquam vel pretium at</h2>
+                        <p class="texto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id faucibus libero. Duis faucibus, lacus eget tempus posuere, urna arcu mollis arcu, non semper turpis lacus elementum odio. </p>
+                        <div class="imagen-publicada">
+                            <img src="./static/images/tiburon.jpg" alt="" height="200">
+                        </div>
+                        <div class="botones">
+                            <button role="button" class="comentario"><i class="fas fa-comment"></i> 100</button>
+                            <button role="button" class="favoritos"><i class="fas fa-heart"></i> 100</button>
+                            <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
+                        </div>
+                    </div>
+                </div>
+                <footer class="footer">
+                    <h3>@grupo 10</h3>
+                </footer>
+            </div>
+    {% endblock %}
+</html>

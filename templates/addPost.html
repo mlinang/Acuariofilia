@@ -1,0 +1,34 @@
+
+
+{% block body %}
+<h1 class="text-center mt-4">Registrar producto</h1>
+<div class="card col-sm-4 m-auto p-5">
+    <form action="{{url_for('addPost')}}" method="post" enctype="multipart/form-data">
+        {{form.csrf_token}}                
+        <div class="mb-3">
+            <div class="col-sm-3">
+                {{form.nombre.label}}
+            </div>
+            {{form.nombre}}
+        </div>
+        <div class="mb-3">
+            <div class="col-sm-3">
+                {{form.descripcion.label}}
+            </div>
+            {{form.descripcion}}
+        </div>
+       
+        <div class="mb-3">
+            <div class="col-sm-3">
+                {{form.imagen.label}}
+            </div>
+            {{form.imagen}}
+        </div>
+       
+        <button class="btn btn-primary" type="submit">Registar</button>
+    </form>
+</div>
+
+{% endblock %}
+
+

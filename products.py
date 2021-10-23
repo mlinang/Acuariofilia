@@ -1,0 +1,4 @@
+products = [{'cod':1,'nombre':'Camisa', 'desc':'camisa bordada', 'cant':5, 'url':'https://seguridadindustrialymedica.com/wp-content/uploads/2020/01/camisa-oxford-azul.jpg', 'estado': 'Activo'},
+            {'cod':2,'nombre':'Jean', 'desc':'Jean tiro alto', 'cant':5, 'url':'https://elaco.vteximg.com.br/arquivos/ids/504055-700-1025/-elaco-producto-Skinny-AZULINDIGOMEDIO-E135853G-2.jpg?v=637518490624830000', 'estado': 'Inactivo'},
+            {'cod':3,'nombre':' corbata', 'desc':'Corbata roja algodón', 'cant':5, 'url':'https://i.pinimg.com/originals/a6/24/c8/a624c8346d4cec9b6facf631db98da0c.jpg', 'estado': 'Activo'}
+            ] 

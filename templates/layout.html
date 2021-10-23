@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link href="./static/css/sb-admin-2.min.css" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">ACUARIOFILIA</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{{url_for('index')}}">Inicio</a>
+            </li>
+            {% if session['rol'] == 1 or session['rol'] == 2 %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{'perfil'}}">Perfil</a>
+            </li>    
+            {% endif %}    
+            {% if session['rol'] == 2 %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{'Dasboard'}}">Dashboard</a>
+            </li>
+            {% endif %} 
+          </ul>
+          <div class="ms-auto">
+            {% if 'id' in session %}
+              <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
+              <span class="navbar-text p-2 bd-highlight"> <a href="{{'logout'}}">Salir</a> </span>
+            {% else %}
+              <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
+              <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span>
+            {% endif %}            
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    
+    
+    {% block body %}
+    
+    {% endblock %}
+    
+
+  </body>
+</html>

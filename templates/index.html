@@ -1,0 +1,41 @@
+{% extends 'layout.html' %} 
+
+{% block body %}
+
+{% with mensajes = get_flashed_messages() %}
+    {% if mensajes %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {% for mensaje in mensajes %}
+                    {{mensaje}}
+            {% endfor %}                                      
+        <button onclick="delete_flash(this)" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>      
+    {% endif %}
+    {% endwith %}
+    <script>
+        function delete_flash(flash) {
+            $(flash).parent().remove()
+        }
+    </script>
+
+<h1 class="text-center mt-5 mb-4">Lista de productos</h1>
+<div class="container d-flex justify-content-center flex-wrap">
+  {% for pub in posts %}
+  <div class="card m-2" style="width: 18rem">
+    <img src="static/images/products/{% print(pub[1]) %}" class="card-img-top" alt="..." style="width: 17.9rem; height: 18rem"/>
+    <div class="card-body">
+      <h5 class="card-title">{% print(pub[2]) %}</h5>
+      <p class="card-text">
+        {% print(pub[3]) %}
+      </p>
+      <p class="card-text">
+        {% print("${:,.0f}".format(pub[4])) %}
+      </p>
+      <a href="{{url_for('shopingProduct', codigo = pub[0]) }}" class="btn btn-primary">Comprar</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+{% endblock %}

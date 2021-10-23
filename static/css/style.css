@@ -1,0 +1,22 @@
+style.css
+
+.ventana{
+    background-image: url("./img/Fondo2.jpg");
+    width: 30%;
+    color: rgb(6, 2, 41);
+    font-family: Comic Sans MS;
+    font-size: 20px;
+    text-align: center;
+    padding: 33px;
+    min-height: 300px;
+    border-radius: 22px;
+    position: absolute;
+    left:35%;
+    top:30%;
+    display:none;
+}
+
+#cerrar{
+    position: absolute;
+    right: 10px;
+}

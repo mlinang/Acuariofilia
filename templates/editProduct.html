@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h1 class="text-center mt-4">Editar producto</h1>
+<div class="card col-sm-4 m-auto p-5">
+    {% for msg in get_flashed_messages() %}
+        <p class="text-center col-sm-5 m-auto bg-success text-white">{{msg}}</p>
+    {% endfor %}
+    <form action="{{url_for('editProduct')}}" method="post" enctype="multipart/form-data">
+        {{form.csrf_token}}                
+        <div class="mb-3">
+            <div class="col-sm-3">
+                {{form.nombre.label}}
+            </div>
+            {{form.nombre(value = products[1])}}
+        </div>
+        <div class="mb-3">
+            <div class="col-sm-3">
+                {{form.descripcion.label}}
+            </div>
+            {{form.descripcion (value = products[2])}}
+        </div>
+        <div class="mb-3">
+            <div class="col-sm-3">
+                {{form.cantidad.label}}
+            </div>
+            {{form.cantidad (value = products[4])}}
+        </div>
+        <div class="mb-3">
+            <div class="col-sm-3">
+                {{form.precio.label}}
+            </div>
+            {{form.precio (value = products[3])}}
+        </div>
+        <div class="mb-3">
+            <div class="col-sm-3">
+                {{form.imagen.label}}
+            </div>
+            {{form.imagen (value = products[5])}}
+        </div>
+        <div class="mb-3">
+            <div class="col-sm-3">
+                {{form.estado.label}}
+            </div>
+            <select name="estado" id="">
+                <option value="{{products[6]}}">{{products[6]}}</option>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+            </select>            
+        </div>
+        <input type="text" value="{{products[5]}}" name="filename" hidden>
+        <input type="text" value="{{products[0]}}" name="id" hidden>
+        <button class="btn btn-primary" type="submit">Editar producto</button>
+    </form>
+</div>
+
+{% endblock %}
+
+
