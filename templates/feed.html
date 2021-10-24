@@ -11,15 +11,15 @@
     <title>AcuarioFilia</title>
 </head>
 {% block body %}
-{% with mensajes = get_flashed_messages() %}
-    {% if mensajes %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {% for mensaje in mensajes %}
-                    {{mensaje}}
-            {% endfor %}                                      
-        <button onclick="delete_flash(this)" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>      
-    {% endif %}
+    {% with mensajes = get_flashed_messages() %}
+        {% if mensajes %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {% for mensaje in mensajes %}
+                        {{mensaje}}
+                {% endfor %}                                      
+            <button onclick="delete_flash(this)" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>      
+        {% endif %}
     {% endwith %}
     <script>
         function delete_flash(flash) {
@@ -48,33 +48,56 @@
             </div>
         </div>
     </nav>
+
     <div class="contenedor">
         <div class=logo>
             <img src="../static/img/logo.png" alt="logo.jpg" width="50%">
         </div>
+
+
         <form class= "estado" form action="{{url_for('addPost')}}" method="post" enctype="multipart/form-data">
-            
             <textarea class="form-control form-control-user" name="nombre" id="nombre" ></textarea>
             <div class="cargarimagen">
-                <input  id="imagen" name="imagen" type="file" multiple class="btn btn-user btn-block"
-                
-                >                     
-                <button type="submit" class="btn btn-user btn-block">
-                    <i class="far fa-paper-plane"></i> Enviar
-                  </button>
-                
+                <div class="cajaCargar">
+                    <div class="cargar">
+                        
+                        <label for="imagen" class="far fa-images" icon> Adjuntar </label>
+                        <input class="btn btn-user btn-block" id="imagen" name="imagen" accept="image/*" type="file" multiple onChange="onLoadImage(event.target.files)">         
+                    </div>
+                    <!-- este script es para tomar el nombre del archivo que se sube a una etiqueta,
+                         meramente estetico para que no se viera ese cuadro feo de cargar imagen, 
+                         ademas si se pica en ese mismo cuadro la quita de la casilla de upload -->
+                    <script>
+                        function onLoadImage(files){
+                    
+                            if (files && files[0]) {
+                              document
+                                .getElementById('imgName')
+                                .innerHTML = files[0].name
+                            }
+                          }
+                          function unLoadImage(){
+                              document
+                                .getElementById('imgName')
+                                .innerHTML = (this.name).remove    
+                          }
+                    </script>
+                </div>  
+                <span id="imgName" onclick="unLoadImage()"></span>
+                <div class="enviar">
+                    <label for="btnEnviar" class="far fa-paper-plane"> Enviar</label>
+                    <button type="submit" class="btnEnviar" id="btnEnviar"></button>
+                </div>
             </div>
         </form> 
        
         <nav class="menu">
             <ul>
                 {% if 'id' in session %}
-                    <li class="fas fa-home " > <a href="{{'perfil'}}">Inicio</a></li>
+                    <li class="fas fa-home " > <a href="{{'perfil'}}">Mi perfil</a></li>
                     <li class="fas fa-binoculars"> <a  href="{{'search'}}">Explora</a></li>
-                    <li class="fas fa-users"> Amigos</li> 
-                    <li class="fas fa-bullhorn"> Notificaciones</li> 
                     <li class="far fa-envelope"> Mensajes</li> 
-                    <li class="fas fa-cogs"> <a href="{{'Dasboard'}}"> Administra </a></li> 
+                    <li class="fas fa-cogs"> <a href="{{'Dashboard'}}"> Administra </a></li> 
                 {% else %}
                     <!-- ESTE ELSE SIRVE PARA CARGAR OPCIONES DE ADMINS Y SUP ADMINS
                         
