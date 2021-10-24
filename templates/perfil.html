@@ -16,6 +16,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
+<<<<<<< HEAD
     {% block body %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
@@ -35,6 +36,57 @@
                         <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
                         <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
                     {% endif %}       
+=======
+{% block body %}
+
+{% with mensajes = get_flashed_messages() %}
+{% if mensajes %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for mensaje in mensajes %}
+                {{mensaje}}
+        {% endfor %}                                      
+    <button onclick="delete_flash(this)" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>      
+{% endif %}
+{% endwith %}
+<script>
+function delete_flash(flash) {
+    $(flash).parent().remove()
+}
+</script>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-perzo">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{'feed'}}">ACUARIOFILIA</a>
+        <div class="" id="">
+            <!-- falta corrgir -->
+            <div class="">
+                {% if 'id' in session %}
+                <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
+                <span class="navbar-text p-2 bd-highlight"> <a href="{{'logout'}}">Logout</a> </span>
+                {% else %}
+                <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
+                <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
+                {% endif %}
+            </div>
+        </div>
+        <form class="d-flex" form action="{{url_for('search')}}" method="post" enctype="multipart/form-data">
+            <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success bg-perzo" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<div class="container bootstrap snippets bootdey">
+    <div class="row">
+        <div class="profile-nav col-md-3">
+            <div class="panel">
+                <div class="user-heading round">
+                    <a href="#">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                    </a>
+                    <h1>Camila Smith</h1>
+                    <p>deydey@theEmail.com</p>
+>>>>>>> 2386066beb8d390c27e43aca7c7c1fa8722e3816
                 </div>
             </div>
         </div>
