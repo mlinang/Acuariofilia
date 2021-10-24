@@ -85,6 +85,7 @@ body{
     
     
 }
+
 .cargarimagen .enviar,
     .cargar {
     background: #c3dfe0;
@@ -96,23 +97,21 @@ body{
 
 }
 .cargar .cajaCargar{
-
+    position: absolute; 
     padding: 0 50px;
     display: flex;
     justify-content: space-between;
     font-size: 25px;
-    position: absolute;
+    
 }
 
 .cajaCargar input{
-
     width: 80px;
     background-color: #FF0000;
-    display: none;
-    height: 40px;
-    
     position:relative ;
-    left:-100px ;
+    height: 60px;
+    display: none;
+   
 }
 .contenedor .mis-publicaciones{
 	gap: 20px;
