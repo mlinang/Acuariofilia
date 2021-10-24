@@ -22,8 +22,15 @@ def allowed_file(filename):
 @app.route('/')
 @app.route('/feed')
 def feed():
+    sql ="SELECT * FROM Post"
+    db = get_db()
+    cursorObj = db.cursor()
+    cursorObj.execute(sql)
+    posts = cursorObj.fetchall()
+    return render_template("feed.html", posts=posts)
+
     
-    if 'fullname' in session and (session['rol'] == 1 or session['rol'] ==2) :
+"""     if 'fullname' in session and (session['rol'] == 1 or session['rol'] ==2) :
         sql ="SELECT * FROM Post"
         db = get_db()
         cursorObj = db.cursor()
@@ -32,8 +39,8 @@ def feed():
         return render_template("feed.html", posts=posts)
         
     else:
-        return redirect('login')
-        
+        return redirect('login') """
+
 
 @app.route('/addPost', methods=['GET', 'POST'])
 def addPost():
@@ -145,7 +152,7 @@ def login():
 def logout():
     if 'id' in session:
         session.pop('id')
-    return redirect(url_for('login'))
+    return redirect(url_for('feed'))
 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
