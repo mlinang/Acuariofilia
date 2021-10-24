@@ -10344,3 +10344,9 @@ body.sidebar-toggled footer.sticky-footer {
 	height: 60px;
     border-radius: 50%
 }
+
+.bg-perzo{
+  background: url(../img/fondobarra.jpg);
+  background-position: center;
+  background-size: cover;
+}

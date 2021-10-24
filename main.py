@@ -1,6 +1,7 @@
 import os
 from flask.helpers import flash
 from werkzeug.utils import secure_filename
+from flask import flash
 from markupsafe import escape
 from forms.forms import *
 from flask import Flask, render_template, url_for, redirect, jsonify, request, session
@@ -184,7 +185,27 @@ def passforget():
 
 @app.route('/recordarpassword')
 def recordarpassword():
-    return render_template("recordarpassword.html")           
+    return render_template("recordarpassword.html")      
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = searchForm()
+    if request.method == 'POST':
+        clave = request.form['palabra']
+        sql = f'SELECT UserId,name, lastname, email,birthay,gender,CreationDate,ProfilePicURL FROM User WHERE name LIKE "%{clave}%" OR lastname LIKE "%{clave}%"'
+        db = get_db()
+        cursorObj = db.cursor()
+        cursorObj.execute(sql)       
+        Sresult = cursorObj.fetchall()
+        if len(Sresult) > 0:
+            return render_template("search.html", Sresult=Sresult)                               
+        else:
+            flash(f'La busqueda no arrojo resultados')
+            return redirect(url_for('feed'))
+
+@app.route('/perfil')
+def perfil():
+    return render_template("perfil.html") 
 
 if __name__ == '__main__':    
     app.run(debug=True, host='127.0.0.1', port =443)

@@ -25,6 +25,10 @@
                     {% endif %}       
                 </div>
             </div>
+            <form class="d-flex" form action="{{url_for('search')}}" method="post" enctype="multipart/form-data">
+                <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success bg-primary bg-dark" type="submit">Search</button>
+              </form>
         </div>
     </nav>
     <div class="contenedor">
@@ -32,17 +36,18 @@
             <img src="../static/img/logo.png" alt="logo.jpg" width="50%">
         </div>
         <form class= "estado" form action="{{url_for('addPost')}}" method="post" enctype="multipart/form-data">
-            <textarea name="nombre" id="nombre" >¿Quieres publicar una imagen?</textarea>
+            
+            <textarea class="form-control form-control-user" name="nombre" id="nombre" ></textarea>
             <div class="cargarimagen">
-                <div class="cargar"> 
-                    <input id="imagen"  type="file" multiple>                     
-                </div>
-                <div class="enviar">
-                    <button class="enviar" type="submit"></button>
-                    <i class="far fa-paper-plane"> </i>
-                </div>
+                <input  id="imagen" name="imagen" type="file" multiple class="btn btn-user btn-block"
+                
+                >                     
+                <button type="submit" class="btn btn-user btn-block">
+                    <i class="far fa-paper-plane"></i> Enviar
+                  </button>
+                
             </div>
-        </form>
+        </form> 
        
         <nav class="menu">
             <ul>
