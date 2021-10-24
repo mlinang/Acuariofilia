@@ -14,11 +14,17 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">ACUARIOFILIA</a>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success bg-primary" type="submit">Search</button>
+            </form>
+            
             <div class="" id=""> <!-- falta corrgir -->
                 <div class="">
                     {% if 'id' in session %}
                         <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
-                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'logout'}}">Logout</a> </span>
+                        <!-- hay un bug en el logout realmente no cierra la sesion -->
+                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Logout</a> </span>
                     {% else %}
                         <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
                         <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
@@ -59,52 +65,35 @@
                     <li class="far fa-envelope"> Mensajes</li> 
                     <li class="fas fa-cogs"> <a href="{{'Dasboard'}}"> Administra </a></li> 
                 {% else %}
+                    <!-- ESTE ELSE SIRVE PARA CARGAR OPCIONES DE ADMINS Y SUP ADMINS
+                        
                     <li class="fas fa-home " > <a href="{{'perfil'}}">Inicio</a></li>
                     <li class="fas fa-binoculars"> <a  href="{{'search'}}">Explora</a></li>
-                    <li class="fas fa-cogs"> <a href="{{'Dasboard'}}"> Administra </a></li>
+                    <li class="fas fa-cogs"> <a href="{{'Dasboard'}}"> Administra </a></li -->
                 {% endif %} 
                  
             </ul>
         </nav>
         <div class="novedades">
             <h1>Novedades</h1>  
-            <div class="novedad">
-                <h2 class="titulo">Aenean magna neque, aliquam vel pretium at</h2>
-                <p class="texto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id faucibus libero. Duis faucibus, lacus eget tempus posuere, urna arcu mollis arcu, non semper turpis lacus elementum odio. </p>
-                <div class="imagen-publicada">
-                    <img src="./static/images/Post/ACUARIO.jpg" alt="" height="200">
+            {% for pub in posts %}
+                <div class="novedad">
+                    <h2 class="titulo">{% print(pub[2]) %}</h2>
+                    <p class="texto">{% print(pub[3]) %}</p>
+                    <a href="{{url_for('postdetail', codigo = pub[0]) }}">
+                        <img src="static/images/post/{% print(pub[1]) %}"  alt="Card image cap">
+                    <div class="botones">
+                        <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="comentario"><i class="fas fa-comment"></i> </a>
+                        {% print(pub[4]) %}
+                        <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="favoritos"><i class="fas fa-heart"></i> </a>
+                        {% print(pub[4]) %}
+
+                        <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
+                    </div>
                 </div>
-                <div class="botones">
-                    <button role="button" class="comentario"><i class="fas fa-comment"></i> 100</button>
-                    <button role="button" class="favoritos"><i class="fas fa-heart"></i> 100</button>
-                    <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
-                </div>
-            </div>
-            <div class="novedad">
-                <h2 class="titulo">Aenean magna neque, aliquam vel pretium at</h2>
-                <p class="texto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id faucibus libero. Duis faucibus, lacus eget tempus posuere, urna arcu mollis arcu, non semper turpis lacus elementum odio. </p>
-                <div class="imagen-publicada">
-                    <img src="./static/images/Post/pez1.jpg" alt="" height="200">
-                </div>
-                <div class="botones">
-                    <button role="button" class="comentario"><i class="fas fa-comment"></i> 100</button>
-                    <button role="button" class="favoritos"><i class="fas fa-heart"></i> 100</button>
-                    <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
-                </div>
-            </div>
-            <div class="novedad">
-                <h2 class="titulo">Aenean magna neque, aliquam vel pretium at</h2>
-                <p class="texto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id faucibus libero. Duis faucibus, lacus eget tempus posuere, urna arcu mollis arcu, non semper turpis lacus elementum odio. </p>
-                <div class="imagen-publicada">
-                    <img src="./static/images/Post/pez2.jpg"  alt="" height="200">
-                </div>
-                <div class="botones">
-                    <button role="button" class="comentario"><i class="fas fa-comment"></i> 100</button>
-                    <button role="button" class="favoritos"><i class="fas fa-heart"></i> 100</button>
-                    <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
-                </div>
-            </div> 
-        </div>
+                {% endfor %}
+            </div>  
+
         <div class="developerteam">
             <h3>@grupo 10</h3>
         </div>
