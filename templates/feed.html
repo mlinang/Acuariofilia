@@ -23,7 +23,8 @@
                 <div class="">
                     {% if 'id' in session %}
                         <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
-                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'logout'}}">Logout</a> </span>
+                        <!-- hay un bug en el logout realmente no cierra la sesion -->
+                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Logout</a> </span>
                     {% else %}
                         <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
                         <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
@@ -44,7 +45,9 @@
                         <label for="adjimagen" class="far fa-images" icon> Adjuntar </label>
                         <input class="adjimagen" id="adjimagen" accept="image/*" type="file" multiple onChange="onLoadImage(event.target.files)">         
                     </div>
-                    
+                    <!-- este script es para tomar el nombre del archivo que se sube a una etiqueta,
+                         meramente estetico para que no se viera ese cuadro feo de cargar imagen, 
+                         ademas si se pica en ese mismo cuadro la quita de la casilla de upload -->
                     <script>
                         function onLoadImage(files){
                     
