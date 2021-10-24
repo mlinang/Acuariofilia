@@ -4,27 +4,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./css/estilo-dashboard.css" rel="stylesheet" type="text/css" >
+    <link href="../static/css/estilo-dashboard.css" rel="stylesheet" type="text/css" >
+
     <script src="https://kit.fontawesome.com/6880bc3485.js" crossorigin="anonymous"></script>
-    <link href="./css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="./static/css/sb-admin-2.min.css" rel="stylesheet">
     
     <title>Aquariofilia-Dashboard bebé</title>
 </head>
 
 <body>
-    <nav class="navbar navbar-dark bg-dark justify-content-between" style="background-color:#e3f2fd;">
-        <a class="navbar-brand" href="#">
-            AcuarioFilia
-        </a>
-        <form class="form-inline">
-            <table>
-                <td>
-                <div><input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                </td>
-                <td><div><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button></div></div></td>
-            </table>
-        </form>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">ACUARIOFILIA</a>
+            <form class="d-flex" form action="{{url_for('search')}}" method="post" enctype="multipart/form-data">
+                <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success bg-primary bg-dark" type="submit">Search</button>
+            </form>
+            
+            <div class="" id=""> <!-- falta corrgir -->
+                <div class="">
+                    {% if 'id' in session %}
+                        <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
+                        <!-- hay un bug en el logout realmente no cierra la sesion -->
+                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Logout</a> </span>
+                    {% else %}
+                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
+                        <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
+                    {% endif %}       
+                </div>
+            </div>
+        </div>
     </nav>
+    
+
+
+
+
     <table>
         <tr>
             <td>

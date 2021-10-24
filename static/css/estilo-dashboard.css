@@ -1,8 +1,10 @@
 body{
     background:#eee;
-    margin-top:20px;
+    margin:0;
 }
-
+.d-flex{
+  width: 50%;
+}
 .panel {
   box-shadow: 0 2px 0 rgba(132, 6, 190, 0.05);
   border-radius: 0;
@@ -80,7 +82,7 @@ h2, .h2 {
   font-weight: 600;
 }
 
-.nav {
+/* .nav {
   display: flex;
   flex-wrap: wrap;
   padding-left: 0;
@@ -149,14 +151,14 @@ h2, .h2 {
   flex-basis: 0;
   flex-grow: 1;
   text-align: center;
-}
+} */
 .tab-content > .tab-pane {
   display: none;
 }
 .tab-content > .active {
   display: block;
 }
-.navbar {
+/* .navbar {
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -519,4 +521,4 @@ h2, .h2 {
 .navbar-dark .navbar-text a:focus,
 .navbar-dark .navbar-text a:hover {
   color: #fff;
-}
+} */
