@@ -4,6 +4,7 @@ from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired
 
 
+
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(message="Este campo es requerido")])
     password = PasswordField('Password', validators=[DataRequired(message="Este campo es requerido")])
@@ -13,7 +14,7 @@ class Postform(FlaskForm):
     nombre = StringField('Nombre', validators=[DataRequired()], render_kw={"placeholder": "¿Quieres publicar una imagen?"})
     descripcion = TextAreaField('Descripción',  validators=[DataRequired()])
     imagen = StringField('Imagen')
-    #estado = SelectField('Estado', choices = [('Activo', 'Activo'), ('Activo', 'Activo'), ('Inactivo', 'Inactivo')])
+    #estado = SelectField('Estado', choices = [('Usuario', '1'), ('Administrador', '2'), ('Inactivo', '3')])
 
 class UserForm(FlaskForm):
     firstname = StringField('firstname', validators=[DataRequired(message="Este campo es requerido")], render_kw={"placeholder": "Su nombre"})
