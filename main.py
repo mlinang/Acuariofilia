@@ -5,7 +5,6 @@ from flask import flash
 from markupsafe import escape
 from forms.forms import *
 from flask import Flask, render_template, url_for, redirect, jsonify, request, session
-from articulos import *
 from db import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
