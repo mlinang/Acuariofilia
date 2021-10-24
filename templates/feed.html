@@ -14,6 +14,11 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">ACUARIOFILIA</a>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success bg-primary" type="submit">Search</button>
+            </form>
+            
             <div class="" id=""> <!-- falta corrgir -->
                 <div class="">
                     {% if 'id' in session %}
@@ -34,13 +39,29 @@
         <form class= "estado" form action="{{url_for('addPost')}}" method="post" enctype="multipart/form-data">
             <textarea name="nombre" id="nombre" >¿Quieres publicar una imagen?</textarea>
             <div class="cargarimagen">
-                <div class="cargar"> 
-                    <input id="imagen"  type="file" multiple>                     
+                <div class="cajaCargar">
+                    <div class="cargar"> 
+                        <label for="adjimagen" class="far fa-images" icon> Adjuntar </label>
+                        <input class="adjimagen" id="adjimagen" accept="image/*" type="file" multiple onChange="onLoadImage(event.target.files)">         
+                    </div>
+                    
+                    <script>
+                        function onLoadImage(files){
+                    
+                            if (files && files[0]) {
+                              document
+                                .getElementById('imgName')
+                                .innerHTML = files[0].name
+                            }
+                          }
+                    </script>
                 </div>
+                <span id="imgName"></span>
                 <div class="enviar">
+                    <i class="far fa-paper-plane"> Enviar</i>
                     <button class="enviar" type="submit"></button>
-                    <i class="far fa-paper-plane"> </i>
                 </div>
+               
             </div>
         </form>
        

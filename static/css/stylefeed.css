@@ -41,6 +41,10 @@ body{
     padding: 0;
     box-sizing: border-box;
 }
+.d-flex{
+    width: 50%;
+    
+}
 .logo img{
     width: 150px;
     height: 127px;
@@ -60,7 +64,7 @@ body{
     grid-area: estado;
 
 } 
-/* textarea pendiente por modificar */
+
 .estado textarea{
 margin-left: 40px;
     font-size: 25px;
@@ -70,6 +74,7 @@ margin-left: 40px;
     border: none;
 }
 .cargarimagen{
+   
     padding: 0 50px;
     display: flex;
     justify-content: space-between;
@@ -84,9 +89,27 @@ margin-left: 40px;
     padding: 5px;
     border-radius: 15px;
     border: none;
+    cursor: pointer;
+
 }
-.cargar input{
-    height: 45px;
+.cargar .cajaCargar{
+
+    padding: 0 50px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 25px;
+    position: absolute;
+}
+
+.cajaCargar input{
+
+    width: 80px;
+    background-color: #FF0000;
+    display: none;
+    height: 40px;
+    
+    position:relative ;
+    left:-100px ;
 }
 .contenedor .mis-publicaciones{
 	gap: 20px;
@@ -108,7 +131,6 @@ margin-left: 40px;
     gap: 20px;
     margin: 2px;
 }
-
 
 .contenedor .novedad{
     padding: 20px;
