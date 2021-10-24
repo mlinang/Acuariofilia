@@ -184,7 +184,11 @@ def passforget():
 
 @app.route('/recordarpassword')
 def recordarpassword():
-    return render_template("recordarpassword.html")      
+    return render_template("recordarpassword.html") 
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template("dashboard.html")      
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
@@ -201,6 +205,8 @@ def search():
         else:
             flash(f'La busqueda no arrojo resultados')
             return redirect(url_for('feed'))
+    if request.method == 'GET':
+        return render_template("search.html")
 
 @app.route('/perfil')
 def perfil():
