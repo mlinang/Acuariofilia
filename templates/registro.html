@@ -14,6 +14,22 @@
 </head>
 
 {% block contenido %}
+{% with mensajes = get_flashed_messages() %}
+    {% if mensajes %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {% for mensaje in mensajes %}
+                    {{mensaje}} <br>
+            {% endfor %}                                      
+        <button onclick="delete_flash(this)" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>      
+    {% endif %}
+    {% endwith %}
+    <script>
+    function delete_flash(flash) {
+        $(flash).parent().remove()
+    }
+    </script>
+    
     <body class="bg-gradient-primary">
         <div class="container">
             <!-- Outer Row -->
@@ -31,9 +47,6 @@
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4">Acuariofilia - Registro</h1>
                                         </div>
-                                        {% for msg in get_flashed_messages() %}
-                                            <p class="text-center col-sm-5 m-auto bg-success text-white">{{msg}}</p>
-                                        {% endfor %}
                                         <form action="{{ url_for('registro') }}" method="post" enctype="multipart/form-data">
                                             {{form.csrf_token}} 
                                             <hr>
