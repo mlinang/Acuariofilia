@@ -54,9 +54,15 @@
                                 .innerHTML = files[0].name
                             }
                           }
+                          function unLoadImage(){
+                              document
+                                .getElementById('imgName')
+                                .innerHTML = (this.name).remove    
+                          }
                     </script>
                 </div>
-                <span id="imgName"></span>
+
+                <span id="imgName" onclick="unLoadImage()"></span>
                 <div class="enviar">
                     <i class="far fa-paper-plane"> Enviar</i>
                     <button class="enviar" type="submit"></button>
@@ -75,52 +81,35 @@
                     <li class="far fa-envelope"> Mensajes</li> 
                     <li class="fas fa-cogs"> <a href="{{'Dasboard'}}"> Administra </a></li> 
                 {% else %}
+                    <!-- ESTE ELSE SIRVE PARA CARGAR OPCIONES DE ADMINS Y SUP ADMINS
+                        
                     <li class="fas fa-home " > <a href="{{'perfil'}}">Inicio</a></li>
                     <li class="fas fa-binoculars"> <a  href="{{'search'}}">Explora</a></li>
-                    <li class="fas fa-cogs"> <a href="{{'Dasboard'}}"> Administra </a></li>
+                    <li class="fas fa-cogs"> <a href="{{'Dasboard'}}"> Administra </a></li -->
                 {% endif %} 
                  
             </ul>
         </nav>
         <div class="novedades">
             <h1>Novedades</h1>  
-            <div class="novedad">
-                <h2 class="titulo">Aenean magna neque, aliquam vel pretium at</h2>
-                <p class="texto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id faucibus libero. Duis faucibus, lacus eget tempus posuere, urna arcu mollis arcu, non semper turpis lacus elementum odio. </p>
-                <div class="imagen-publicada">
-                    <img src="./static/images/Post/ACUARIO.jpg" alt="" height="200">
+            {% for pub in posts %}
+                <div class="novedad">
+                    <h2 class="titulo">{% print(pub[2]) %}</h2>
+                    <p class="texto">{% print(pub[3]) %}</p>
+                    <a href="{{url_for('postdetail', codigo = pub[0]) }}">
+                        <img src="static/images/post/{% print(pub[1]) %}"  alt="Card image cap">
+                    <div class="botones">
+                        <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="comentario"><i class="fas fa-comment"></i> </a>
+                        {% print(pub[4]) %}
+                        <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="favoritos"><i class="fas fa-heart"></i> </a>
+                        {% print(pub[4]) %}
+
+                        <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
+                    </div>
                 </div>
-                <div class="botones">
-                    <button role="button" class="comentario"><i class="fas fa-comment"></i> 100</button>
-                    <button role="button" class="favoritos"><i class="fas fa-heart"></i> 100</button>
-                    <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
-                </div>
-            </div>
-            <div class="novedad">
-                <h2 class="titulo">Aenean magna neque, aliquam vel pretium at</h2>
-                <p class="texto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id faucibus libero. Duis faucibus, lacus eget tempus posuere, urna arcu mollis arcu, non semper turpis lacus elementum odio. </p>
-                <div class="imagen-publicada">
-                    <img src="./static/images/Post/pez1.jpg" alt="" height="200">
-                </div>
-                <div class="botones">
-                    <button role="button" class="comentario"><i class="fas fa-comment"></i> 100</button>
-                    <button role="button" class="favoritos"><i class="fas fa-heart"></i> 100</button>
-                    <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
-                </div>
-            </div>
-            <div class="novedad">
-                <h2 class="titulo">Aenean magna neque, aliquam vel pretium at</h2>
-                <p class="texto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id faucibus libero. Duis faucibus, lacus eget tempus posuere, urna arcu mollis arcu, non semper turpis lacus elementum odio. </p>
-                <div class="imagen-publicada">
-                    <img src="./static/images/Post/pez2.jpg"  alt="" height="200">
-                </div>
-                <div class="botones">
-                    <button role="button" class="comentario"><i class="fas fa-comment"></i> 100</button>
-                    <button role="button" class="favoritos"><i class="fas fa-heart"></i> 100</button>
-                    <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
-                </div>
-            </div> 
-        </div>
+                {% endfor %}
+            </div>  
+
         <div class="developerteam">
             <h3>@grupo 10</h3>
         </div>
