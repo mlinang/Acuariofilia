@@ -262,13 +262,16 @@ def search():
 
 @app.route('/perfil')
 def perfil():
-    id = request.args.get('codigo')
-    sql = "SELECT * FROM User WHERE UserId = ?"
-    db = get_db()
-    cursorObj = db.cursor()
-    cursorObj.execute(sql, (id))
-    psel = cursorObj.fetchall()
-    return render_template("perfil.html", psel=psel)
+    form = UserForm()
+    if request.method == 'GET':
+        idsel = request.args.get('codigo')
+        sql = f'SELECT * FROM User WHERE UserId = {idsel}'
+        db = get_db()
+        cursorObj = db.cursor()
+        cursorObj.execute(sql)
+        psel = cursorObj.fetchall()[0]
+        return render_template("perfil.html", psel=psel)
+   
 
 
 

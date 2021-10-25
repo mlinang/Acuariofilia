@@ -16,110 +16,146 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 {% block body %}
-    {% with mensajes = get_flashed_messages() %}
-        {% if mensajes %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {% for mensaje in mensajes %}
-                        {{mensaje}}
-                {% endfor %}                                      
-            <button onclick="delete_flash(this)" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>      
-        {% endif %}
-    {% endwith %}
-    <script>
-        function delete_flash(flash) {
-            $(flash).parent().remove()
-        }
-    </script>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{'login'}}">ACUARIOFILIA</a>
-            <form class="d-flex" form action="{{url_for('search')}}" method="post" enctype="multipart/form-data">
-                <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success bg-primary bg-dark" type="submit">Search</button>
-            </form>
-            
-            <div class="" id=""> <!-- falta corrgir -->
-                <div class="">
-                    {% if 'id' in session %}
-                        <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
-                        <!-- hay un bug en el logout realmente no cierra la sesion -->
-                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Logout</a> </span>
-                    {% else %}
-                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
-                        <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
-                    {% endif %}       
-                </div>
+{% with mensajes = get_flashed_messages() %}
+{% if mensajes %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {% for mensaje in mensajes %}
+    {{mensaje}}
+    {% endfor %}
+    <button onclick="delete_flash(this)" type="button" class="btn-close" data-bs-dismiss="alert"
+        aria-label="Close"></button>
+</div>
+{% endif %}
+{% endwith %}
+<script>
+    function delete_flash(flash) {
+        $(flash).parent().remove()
+    }
+</script>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{'login'}}">ACUARIOFILIA</a>
+        <form class="d-flex" form action="{{url_for('search')}}" method="post" enctype="multipart/form-data">
+            <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success bg-primary bg-dark" type="submit">Search</button>
+        </form>
+
+        <div class="" id="">
+            <!-- falta corrgir -->
+            <div class="">
+                {% if 'id' in session %}
+                <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
+                <!-- hay un bug en el logout realmente no cierra la sesion -->
+                <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Logout</a> </span>
+                {% else %}
+                <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
+                <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
+                {% endif %}
             </div>
         </div>
-    </nav>
-    <div class="container bootstrap snippets bootdey">
-        <form class= "datosPersonales" form action="" method="post" enctype="multipart/form-data">
-            <div class="row">
-                <div class="profile-nav col-md-3">
-                    <div class="panel">
-                        <div class="user-heading round">
-                            <a href="#">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
-                            </a>
-                            <h1>Camila Smith</h1>
-                            <p>deydey@theEmail.com</p>
-                        </div>
-                        <div class="menu">
-                            <ul class="nav nav-pills nav-stacked">
-                                <li class="active"><a href="{{'feed'}}"> <i class="fas fa-home"></i>Inicio</a></li>
-                                <li><a href="#"> <i class="fa fa-edit"></i> Edit profile</a></li>
-                                <li><a href="#"> <i class="fa fa-user-times"></i> Borrar Perfil</a></li>
-                            </ul>
+    </div>
+</nav>
+<div class="container bootstrap snippets bootdey">
+    <form class="datosPersonales" form action="" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="profile-nav col-md-3">
+                <div class="panel">
+                    <div class="user-heading round">
+                        <a href="#">
+                            <img src="../static/images/perfil/{% print(psel[9]) %}" alt="">
+                        </a>
+                        <h1>{%print(psel[1]+" "+ psel[2])%}</h1>
+                        <p>{%print(psel[3])%}</p>
+                    </div>
+                    <div class="menu">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li class="active"><a href="{{'feed'}}"> <i class="fas fa-home"></i>Inicio</a></li>
+                            <li><a href="#"> <i class="fa fa-edit"></i> Edit profile</a></li>
+                            <li><a href="#"> <i class="fa fa-user-times"></i> Borrar Perfil</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-info col-md-9">
+
+                <div class="panel">
+                    <h1>Acerca de Mi</h1> <br>
+                    <div class="bio-graph-heading">
+                        {%print(psel[12])%}
+                    </div>
+                    <div class="panel-body bio-graph-info">
+                        <h1>Informacion Personal</h1> <br><br>
+                        <div class="row">
+                            <form>
+                                {%if session['id']==psel[0]%}
+                                    <div class="bio-row">
+                                        <label for="nombre">Nombre </label>
+                                        <input type="text" name="nombre" id="nombre" value="{%print(psel[1])%}" >
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="apellido">Apellido </label>
+                                        <input type="text" name="apellido" id="apellido" value="{%print(psel[2])%}" >
+                                     </div>
+                                    <div class="bio-row">
+                                        <label for="pais">Pais </label>
+                                        <input type="text" name="pais" id="pais" value="{%print(psel[10])%}" >
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="nacimiento">Fecha Nacimiento</label>
+                                        <input type="text" name="nacimiento" id="nacimiento" value="{%print(psel[5])%}" >
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="profesion">Profesion</label>
+                                        <input type="text" name="profesion" id="profesion" value="UI Designer" >
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="email">Email</label>
+                                        <input type="text" name="email" id="email" value="{%print(psel[3])%}" >
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="telefono">Telefono</label>
+                                        <input type="text" name="telefono" id="telefono" value="{%print(psel[11])%}" >
+                                    </div>
+                                {%else%}
+                                    <div class="bio-row">
+                                        <label for="nombre">Nombre </label>
+                                        <input type="text" name="nombre" id="nombre" value="{%print(psel[1])%}" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="apellido">Apellido </label>
+                                        <input type="text" name="apellido" id="apellido" value="{%print(psel[2])%}" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="pais">Pais </label>
+                                        <input type="text" name="pais" id="pais" value="{%print(psel[10])%}" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="nacimiento">Fecha Nacimiento</label>
+                                        <input type="text" name="nacimiento" id="nacimiento" value="{%print(psel[5])%}" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="profesion">Profesion</label>
+                                        <input type="text" name="profesion" id="profesion" value="UI Designer" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="email">Email</label>
+                                        <input type="text" name="email" id="email" value="{%print(psel[3])%}" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="telefono">Telefono</label>
+                                        <input type="text" name="telefono" id="telefono" value="{%print(psel[11])%}" disabled>
+                                    </div>
+                                {%endif%}
+
+                            </form>
                         </div>
                     </div>
                 </div>
-
-                <div class="profile-info col-md-9">
-                    
-                    <div class="panel">
-                        <h1>Acerca de Mi</h1> <br>
-                        <div class="bio-graph-heading">
-                            Aliquam ac magna metus. Nam sed arcu non tellus fringilla fringilla ut vel ispum. Aliquam ac magna
-                            metus.
-                        </div>
-                        <div class="panel-body bio-graph-info">
-                            <h1>Informacion Personal</h1> <br><br>
-                            <div class="row">
-                                <div class="bio-row">
-                                    <label for="nombre">Nombre </label>
-                                    <input type="text" name="nombre" id="nombre" value=":  Camila">
-                                </div>
-                                <div class="bio-row">
-                                    <label for="apellido">Apellido </label>
-                                    <input type="text" name="apellido" id="apellido" value=":  Smith">
-                                </div>
-                                <div class="bio-row">
-                                    <label for="pais">Pais </label>
-                                    <input type="text" name="pais" id="pais" value=":  Australia">
-                                </div>
-                                <div class="bio-row">
-                                    <label for="nacimiento">Fecha Nacimiento</label>
-                                    <input type="text" name="nacimiento" id="nacimiento" value=":  13 July 1983">
-                                </div>
-                                <div class="bio-row">
-                                    <label for="profesion">Profesion</label>
-                                    <input type="text" name="profesion" id="profesion" value=":  UI Designer">
-                                </div>
-                                <div class="bio-row">
-                                    <label for="email">Email</label>
-                                    <input type="text" name="email" id="email" value=":  jsmith@flatlab.com">
-                                </div>
-                                <div class="bio-row">
-                                    <label for="telefono">Telefono</label>
-                                    <input type="text" name="telefono" id="telefono" value=":  (12) 03 4567890">
-                                </div>
-                            </div>
-                        </div>
-                    </div>   
-                </div>
             </div>
-        </form>
-    </div>
-    {% endblock %}
+        </div>
+    </form>
+</div>
+{% endblock %}
+
 </html>
