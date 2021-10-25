@@ -34,30 +34,36 @@ def login_required(view):
 @app.route('/feed')
 #@login_required
 def feed():
-    usu= session['id']
-    sql ="SELECT * FROM Post order by creationDate desc limit 10"
-    db = get_db()
-    cursorObj = db.cursor()
-    cursorObj.execute(sql)
-    posts = cursorObj.fetchall()
-    sql =f'SELECT * FROM Post WHERE UserId = {usu} order by creationDate desc limit 20'
-    db = get_db()
-    cursorObj = db.cursor()
-    cursorObj.execute(sql)
-    postown = cursorObj.fetchall()
-    return render_template("feed.html", posts=posts, postown=postown)
-
-    
-    '''if 'fullname' in session and (session['rol'] == 1 or session['rol'] ==2) :
-        sql ="SELECT * FROM Post"
+    #@pablo@ esta condicion es por si alguien escribe directamente /feed en el navegador y no se encuentra logeado lo manda al login
+    #probando esto me di cuenta que le doy logout me manda al login, pero si escribo /feed puedo abrirlo porque no ha salido de la sesion. 
+    if 'fullname' in session:
+        usu= session['id']
+        sql ="SELECT * FROM Post order by creationDate desc limit 10"
         db = get_db()
         cursorObj = db.cursor()
         cursorObj.execute(sql)
         posts = cursorObj.fetchall()
-        return render_template("feed.html", posts=posts)
+        sql =f'SELECT * FROM Post WHERE UserId = {usu} order by creationDate desc limit 20'
+        db = get_db()
+        cursorObj = db.cursor()
+        cursorObj.execute(sql)
+        postown = cursorObj.fetchall()
+        """ return render_template("feed.html", posts=posts, postown=postown) """
+        #@pablo@ active la condicion para que si no tiene una sesion abierta lo envie al login.
+        if 'fullname' in session and (session['rol'] == 1 or session['rol'] ==2) :
+            sql ="SELECT * FROM Post"
+            db = get_db()
+            cursorObj = db.cursor()
+            cursorObj.execute(sql)
+            posts = cursorObj.fetchall()
+            return render_template("feed.html", posts=posts, postown=postown)
+        
+        else:
+            return redirect('login')
         
     else:
-        return redirect('login')'''
+        return redirect('login')
+    
 
 
 @app.route('/addPost', methods=['GET', 'POST'])
