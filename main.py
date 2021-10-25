@@ -21,43 +21,26 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
-'''# Usuario requerido:
-def login_required(view):
-    @functools.wraps( view ) # toma una función utilizada en un decorador y añadir la funcionalidad de copiar el nombre de la función.
-    def wrapped_view(**kwargs):
-        if session['Id'] is None:
-            return redirect( url_for( 'login' ) ) # si no tiene datos, lo envío a que se loguee
-        return view( **kwargs )
-    return wrapped_view'''
 
-@app.route('/') 
+
+@app.route('/')
 @app.route('/feed')
-#@login_required
 def feed():
-    usu= session['id']
-    sql ="SELECT * FROM Post order by creationDate desc limit 10"
-    db = get_db()
-    cursorObj = db.cursor()
-    cursorObj.execute(sql)
-    posts = cursorObj.fetchall()
-    sql =f'SELECT * FROM Post WHERE UserId = {usu} order by creationDate desc limit 20'
-    db = get_db()
-    cursorObj = db.cursor()
-    cursorObj.execute(sql)
-    postown = cursorObj.fetchall()
-    return render_template("feed.html", posts=posts, postown=postown)
-
-    
-    '''if 'fullname' in session and (session['rol'] == 1 or session['rol'] ==2) :
-        sql ="SELECT * FROM Post"
+    if 'fullname' in session and (session['rol'] == 1 or session['rol'] ==2) :
+        usu= session['id']
+        sql ="SELECT * FROM Post order by creationDate desc limit 10"
         db = get_db()
         cursorObj = db.cursor()
         cursorObj.execute(sql)
         posts = cursorObj.fetchall()
-        return render_template("feed.html", posts=posts)
-        
+        sql =f'SELECT * FROM Post WHERE UserId = "{usu}" order by creationDate desc limit 20'
+        db = get_db()
+        cursorObj = db.cursor()
+        cursorObj.execute(sql)
+        postown = cursorObj.fetchall()
+        return render_template("feed.html", posts=posts, postown=postown)
     else:
-        return redirect('login')'''
+        return redirect('login')
 
 
 @app.route('/addPost', methods=['GET', 'POST'])
@@ -277,7 +260,9 @@ def search():
 
 @app.route('/perfil')
 def perfil():
-    return render_template("perfil.html") 
+    return render_template("perfil.html")
+
+
 
 if __name__ == '__main__':    
     app.run(debug=True, host='127.0.0.1', port =443)
