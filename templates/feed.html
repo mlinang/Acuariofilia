@@ -111,22 +111,24 @@
         <div class="novedades">
             <h1>Novedades</h1>  
             {% for pub in posts %}
-                <div class="novedad">
-                    <h2 class="titulo">{% print(pub[2]) %}</h2>
-                    <p class="texto">{% print(pub[3]) %}</p>
-                    <a href="{{url_for('postdetail', codigo = pub[0]) }}">
-                        <img src="static/images/post/{% print(pub[1]) %}"  alt="Card image cap">
-                    <div class="botones">
-                        <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="comentario"><i class="fas fa-comment"></i> </a>
-                        {% print(pub[4]) %}
-                        <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="favoritos"><i class="fas fa-heart"></i> </a>
-                        {% print(pub[4]) %}
+                {%if pub[4] != session['id']%}
+                    <div class="novedad">
+                        <h2 class="titulo">{% print(pub[2]) %}</h2>
+                        <p class="texto">{% print(pub[3]) %}</p>
+                        <a href="{{url_for('postdetail', codigo = pub[0]) }}">
+                            <img src="static/images/post/{% print(pub[1]) %}"  alt="Card image cap">
+                        <div class="botones">
+                            <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="comentario"><i class="fas fa-comment"></i> </a>
+                            {% print(pub[4]) %}
+                            <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="favoritos"><i class="fas fa-heart"></i> </a>
+                            {% print(pub[4]) %}
 
-                        <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
+                            <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
+                        </div>
                     </div>
-                </div>
-                {% endfor %}
-            </div>  
+                {%endif%}
+            {% endfor %}
+        </div>  
 
         <div class="developerteam">
             <h3>@grupo 10</h3>
@@ -135,7 +137,7 @@
             <h1>Mis Publicaciones</h1>
             <div class = "contenedor-publicaciones">
 
-                    {% for pub in posts %}
+                    {% for pub in postown %}
                         <div class="imagen-publicada">
                             <a href="{{url_for('postdetail', codigo = pub[0]) }}">
                                 <img src="static/images/post/{% print(pub[1]) %}"  alt="Card image cap">

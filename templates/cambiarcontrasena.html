@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="./static/css/stylefeed.css">
+    <script src="https://kit.fontawesome.com/6880bc3485.js" crossorigin="anonymous"></script>
+    <link href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href='/static/img/favicon.png' rel='shortcut icon' type='image/x-icon'/>
+    <title>Cambio Constraseña Acuariofilia</title>
+    <!--sb-admin-2.min  login_style -->
+</head>
+
+<body class="bg-gradient-primary">
+    {% with mensajes = get_flashed_messages() %}
+    {% if mensajes %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {% for mensaje in mensajes %}
+                    {{mensaje}} <br>
+            {% endfor %}                                      
+        <button onclick="delete_flash(this)" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>      
+    {% endif %}
+    {% endwith %}
+    <script>
+    function delete_flash(flash) {
+        $(flash).parent().remove()
+    }
+    </script>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">ACUARIOFILIA</a>
+            <form class="d-flex" form action="{{url_for('search')}}" method="post" enctype="multipart/form-data">
+                <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success bg-primary bg-dark" type="submit">Search</button>
+            </form>
+            
+            <div class="" id=""> <!-- falta corrgir -->
+                <div class="">
+                    {% if 'id' in session %}
+                        <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
+                        <!-- hay un bug en el logout realmente no cierra la sesion -->
+                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Logout</a> </span>
+                    {% else %}
+                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
+                        <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
+                    {% endif %}       
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                
+                                <div class="p-5">
+                                    
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Acuariofilia</h1>
+                                        <h2 class="h4 text-gray-900 mb-4">Cambio de Contraseña</h2> 
+                                    </div>
+                                    <form class="user" action="{{ url_for('changepass') }}" method="post">
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user"
+                                                id="Password" name="password" placeholder="Contraseña">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user"
+                                                id="newPass1" name="newPass1" placeholder="Nueva contraseña">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user"
+                                                id="newPass1" name="newPass2" placeholder="Confirmar nueva contraseña">
+                                        </div>
+                                        <input type="submit" id="Enviar" value="Enviar" class="btn btn-primary btn-user btn-block" />
+                                    </form>
+                                    <div class="text-center">
+                                        <a class="small" href="/login">Opss ya la recuerdo, ir a iniciar sesion</a>
+                                    </div>
+                                    <hr>
+                                    <a href="registro.html" class="btn btn-success btn-user btn-block">
+                                        Registrarme
+                                    </a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 import os
 from flask.helpers import flash
 from werkzeug.utils import secure_filename
-from flask import flash
+from flask import flash, sessions
 from markupsafe import escape
 from forms.forms import *
 from flask import Flask, render_template, url_for, redirect, jsonify, request, session
@@ -9,6 +9,7 @@ from db import *
 from utils import isUsernameValid, isEmailValid, isPasswordValid
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import functools
 
 UPLOAD_FOLDER = os.path.abspath("static/images/Post")
 ALLOWED_EXTENSIONS = set(["png","jpg", "jpeg"])
@@ -20,18 +21,34 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/')
+'''# Usuario requerido:
+def login_required(view):
+    @functools.wraps( view ) # toma una función utilizada en un decorador y añadir la funcionalidad de copiar el nombre de la función.
+    def wrapped_view(**kwargs):
+        if session['Id'] is None:
+            return redirect( url_for( 'login' ) ) # si no tiene datos, lo envío a que se loguee
+        return view( **kwargs )
+    return wrapped_view'''
+
+@app.route('/') 
 @app.route('/feed')
+#@login_required
 def feed():
-    sql ="SELECT * FROM Post"
+    usu= session['id']
+    sql ="SELECT * FROM Post order by creationDate desc limit 10"
     db = get_db()
     cursorObj = db.cursor()
     cursorObj.execute(sql)
     posts = cursorObj.fetchall()
-    return render_template("feed.html", posts=posts)
+    sql =f'SELECT * FROM Post WHERE UserId = {usu} order by creationDate desc limit 20'
+    db = get_db()
+    cursorObj = db.cursor()
+    cursorObj.execute(sql)
+    postown = cursorObj.fetchall()
+    return render_template("feed.html", posts=posts, postown=postown)
 
     
-"""     if 'fullname' in session and (session['rol'] == 1 or session['rol'] ==2) :
+    '''if 'fullname' in session and (session['rol'] == 1 or session['rol'] ==2) :
         sql ="SELECT * FROM Post"
         db = get_db()
         cursorObj = db.cursor()
@@ -40,7 +57,7 @@ def feed():
         return render_template("feed.html", posts=posts)
         
     else:
-        return redirect('login') """
+        return redirect('login')'''
 
 
 @app.route('/addPost', methods=['GET', 'POST'])
@@ -121,7 +138,7 @@ def login():
     error = ""
     form = LoginForm()
     if(form.validate_on_submit()):                
-       # email = form.email.data
+       
         email = escape(form.email.data.strip())
         password = escape(form.password.data.strip())
         sql = f'SELECT * FROM User WHERE email = "{email}"'
@@ -200,10 +217,37 @@ def registro():
                 flash('Woops! Hubo un error. Intenta nuevamente')
     return render_template('registro.html', form=form)
 
-@app.route('/restablecercontrasena')
-def passforget():
-    session.clear()
-    return render_template("restablecercontrasena.html")
+@app.route('/cambiarcontrasena', methods=['GET', 'POST']) #ojo... debe haber siempre una sesion activa
+def changepass():
+    error1 = None
+    form = UserForm()
+    if request.method == 'POST':
+        currentPass = request.form['password']
+        newPass1 = request.form['newPass1']            
+        newPass2 = request.form['newPass2']
+
+        if not check_password_hash(session['password'], currentPass):    #si la clave hash de la sesion activa no coincide con la ingresada
+            error1 = "Error al validar la contraseña actual"   #ojo, si no hay sesión activa da error
+            flash(error1)
+        if newPass1 != newPass2:    #si los dos campos de nueva contraseña no coinciden
+            error1 = "Error al validar la nueva contraseña"
+            flash(error1)
+        else:
+            newPassHash = generate_password_hash(newPass1)  #genera nueva contraseña encriptada
+        if error1 is not None:
+            print(error1)
+            return render_template("cambiarcontrasena.html", form=form)
+        else:
+            db = get_db()
+            sql1 = f'UPDATE User SET password = ? WHERE email = ?'
+            result = db.execute(sql1, (newPassHash, session['correo'])).rowcount
+            db.commit()  
+            if result > 0:
+                flash('Se actualizó la contraseña exitosamente')
+            else:
+                flash('No se pudo actualizar la contraseña')
+            #session.clear()
+    return render_template("cambiarcontrasena.html", form=form)
 
 @app.route('/recordarpassword')
 def recordarpassword():
