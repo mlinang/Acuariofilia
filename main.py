@@ -6,6 +6,7 @@ from markupsafe import escape
 from forms.forms import *
 from flask import Flask, render_template, url_for, redirect, jsonify, request, session
 from db import *
+from utils import isUsernameValid, isEmailValid, isPasswordValid
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import functools
@@ -183,15 +184,37 @@ def registro():
         gender="Masculino"
         role=2
         CreationDate= datetime.now()
-        contrasenaHas = generate_password_hash(password)
-        sql = 'INSERT INTO User (name,Lastname,email,password,gender,birthay,role,CreationDate) VALUES (?,?,?,?,?,?,?,?) '  
-        db = get_db()
-        result = db.execute(sql, (nombre,apellido,email,contrasenaHas,gender,birthday,role,CreationDate)).rowcount
-        db.commit()
-        if result!=0:
-            flash('Registro exitoso')
+        
+        #Si el correo es valido, si el correo existe, si el password es valido
+        sql1 = f'SELECT * FROM User WHERE email = "{email}"'
+        db1 = get_db()
+        cursorObj1 = db1.cursor()
+        cursorObj1.execute(sql1)       
+        usuarios1 = cursorObj1.fetchall()
+        error = None
+        if len(usuarios1) > 0:  #si ya existe un usuario con ese email
+            error = "El correo ingresado ya se encuentra en uso"
+            flash(error)
+        if not isEmailValid(email):
+            error = "El correo ingresado es inválido"
+            flash(error)
+        #if not isPasswordValid(password):
+            #error = "La contraseña debe contener al menos una minúscula, una mayúscula, un número y 5 caracteres"
+            #flash(error)
+        if error is not None:
+            # Ocurrió un error
+            print(error)
+            return render_template("registro.html", form=form)
         else:
-            flash('Woops! Hubo un error. Intenta nuevamente')
+            contrasenaHas = generate_password_hash(password)
+            sql = 'INSERT INTO User (name,Lastname,email,password,gender,birthay,role,CreationDate) VALUES (?,?,?,?,?,?,?,?) '  
+            db = get_db()
+            result = db.execute(sql, (nombre,apellido,email,contrasenaHas,gender,birthday,role,CreationDate)).rowcount
+            db.commit()
+            if result!=0:
+                flash('Registro exitoso')
+            else:
+                flash('Woops! Hubo un error. Intenta nuevamente')
     return render_template('registro.html', form=form)
 
 @app.route('/restablecercontrasena')
