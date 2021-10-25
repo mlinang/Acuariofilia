@@ -289,9 +289,9 @@ def addcomm():
         db = get_db()
         db.execute('INSERT INTO Comments (Content, PostId, UserId, CreationDate) VALUES(?,?,?,?)', (contenido,postsel,session['id'],datetime.now() ))
         db.commit()
-        
-    return render_template('postdetail.html')
+    return redirect(url_for('postdetail', codigo = postsel))
 
+    
 
 if __name__ == '__main__':    
     app.run(debug=True, host='127.0.0.1', port =443)
