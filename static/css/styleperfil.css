@@ -4,7 +4,7 @@ body {
   font-family: 'Open Sans', sans-serif;
   padding: 0px !important;
   margin: 0px !important;
-  font-size: 13px;
+  font-size: 17px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
@@ -93,19 +93,33 @@ body {
   font-weight: 300;
   margin: 0 0 20px;
 }
+.panel  h1{
+  background: rgba(56, 81, 223, 0.1);
+  text-align: center;
+  font-size: 30px;
+  
+}
 
 /* aquiiiiiiiiiiiii */
+.panel-body {
+  margin-top: 30px;
+  
+}
+
 .bio-row {
   
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   width: 50%;
-  float: left;
+  /* float: left; */
   margin-bottom: 10px;
   padding:0 15px;
 }
 .bio-row input{
   background: none;
   border: 0;
-  text-align: center;
+  text-align: left;
 }
 .bio-row p span {
   width: 100px;
