@@ -260,7 +260,13 @@ def search():
 
 @app.route('/perfil')
 def perfil():
-    return render_template("perfil.html")
+    id = request.args.get('codigo')
+    sql = "SELECT * FROM User WHERE UserId = ?"
+    db = get_db()
+    cursorObj = db.cursor()
+    cursorObj.execute(sql, (id))
+    psel = cursorObj.fetchall()
+    return render_template("perfil.html", psel=psel)
 
 
 
