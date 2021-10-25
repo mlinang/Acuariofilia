@@ -138,7 +138,6 @@
             <div class = "contenedor-publicaciones">
 
                     {% for pub in postown %}
-                        {%if postown[4] == session['id']%}
                         <div class="imagen-publicada">
                             <a href="{{url_for('postdetail', codigo = pub[0]) }}">
                                 <img src="static/images/post/{% print(pub[1]) %}"  alt="Card image cap">
@@ -150,7 +149,6 @@
                                 {% print(pub[4]) %}
                             </div>
                         </div>
-                        {% endif %}  
                     {% endfor %}  
             </div>
         </main>
