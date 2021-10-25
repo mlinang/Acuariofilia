@@ -20,7 +20,10 @@
                             {% if 'id' in session %}
                                 <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
                                 <!-- hay un bug en el logout realmente no cierra la sesion -->
-                                <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Logout</a> </span>
+                                <div class="av-user-icon">
+                                    <img src="../static/images/perfil/{% print(postsel[0][15]) %}" alt="user" class="fotoperfil-md-left">
+                                </div>
+                                <span class="navbar-text p-2 bd-highlight"> <a href="{{'logout'}}">Logout</a> </span>
                             {% else %}
                                 <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
                                 <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->

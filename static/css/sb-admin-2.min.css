@@ -10350,3 +10350,9 @@ body.sidebar-toggled footer.sticky-footer {
   background-position: center;
   background-size: cover;
 }
+
+.nav-user-icon img{
+  width: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
