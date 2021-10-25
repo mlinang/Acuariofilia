@@ -155,6 +155,7 @@ def login():
 def logout():
     if 'id' in session:
         session.pop('id')
+        session.clear()
     return redirect(url_for('feed'))
 
 @app.route('/registro', methods=['GET', 'POST'])
@@ -231,12 +232,12 @@ def changepass():
                 flash('Se actualizó la contraseña exitosamente')
             else:
                 flash('No se pudo actualizar la contraseña')
-            #session.clear()
+            #session.clear()        #OJO: la contraseña antigua queda guardada en la variable de la sesion inicial
     return render_template("cambiarcontrasena.html", form=form)
 
-@app.route('/recordarpassword')
-def recordarpassword():
-    return render_template("recordarpassword.html") 
+@app.route('/restablecercontrasena')
+def restablecercontrasena():
+    return render_template("restablecercontrasena.html") 
 
 @app.route('/dashboard')
 def dashboard():
@@ -269,8 +270,6 @@ def perfil():
     cursorObj.execute(sql, (id))
     psel = cursorObj.fetchall()
     return render_template("perfil.html", psel=psel)
-
-
 
 if __name__ == '__main__':    
     app.run(debug=True, host='127.0.0.1', port =443)
