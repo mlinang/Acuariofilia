@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="../static/css/estilo-dashboard.css" rel="stylesheet" type="text/css" >
+        <link href="/static/css/estilo-dashboard.css" rel="stylesheet" type="text/css" >
 
         <script src="https://kit.fontawesome.com/6880bc3485.js" crossorigin="anonymous"></script>
         <link href="./static/css/sb-admin-2.min.css" rel="stylesheet">
@@ -12,10 +12,25 @@
         <title>Aquariofilia-Dashboard bebé</title>
     </head>
 
-    <body>
+    {% block body %}
+        {% with mensajes = get_flashed_messages() %}
+            {% if mensajes %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {% for mensaje in mensajes %}
+                            {{mensaje}}
+                    {% endfor %}                                      
+                <button onclick="delete_flash(this)" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>      
+            {% endif %}
+        {% endwith %}
+        <script>
+            function delete_flash(flash) {
+                $(flash).parent().remove()
+            }
+        </script>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{{'login'}}">ACUARIOFILIA</a>
+                <a class="navbar-brand" href="#">ACUARIOFILIA</a>
                 <form class="d-flex" form action="{{url_for('search')}}" method="post" enctype="multipart/form-data">
                     <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success bg-primary bg-dark" type="submit">Search</button>
@@ -35,7 +50,7 @@
                 </div>
             </div>
         </nav>
-        
+
         <div class="contenedorContenido">
             <div class="audiencia">
                 <div class="panel-body text-center">
@@ -59,47 +74,48 @@
                     </div>
                 </div>
             </div>
-        <div class="resumenContenido">
-            <div class="contenido">
+            <div class="resumenContenido">
+                <div class="contenido">
+                    <div class="panel-body text-center">
+                        <p class="h2 text-thin">Contenido</p>
+                        <i class="fa fa-book fa-3x" aria-hidden="true"></i>
+                        <hr>
+                        <p class="text-uppercase mar-btm text-sm"><i class="fa fa-list fa-fw" aria-hidden="true"></i>  60 publicaciones</p>
+                        <table class="tabla" border="2">
+                            <tbody><tr class="header">
+                                <td>Nombre de publicación</td><td>Interacciones</td><td>Visto</td><td>Compartido</td>
+                                </tr>
+                                <tr>
+                                <td>1. Mi hermoso pez dorado</td><td>140</td><td>162</td><td>25</td>
+                                </tr>
+                                <tr>
+                                <td>2. Vengan a ver el lugar favorito de mi calamar</td><td>138</td><td>145</td><td>19</td>
+                                </tr>
+                                <tr>
+                                <td>3. El pulpo Paul adivinando el próximo resultado</td><td>65</td><td>71</td><td>15</td>
+                                </tr>
+                                <tr>
+                                <td>4. Nadando con anguilas eléctricas</td><td>49</td><td>55</td><td>5</td>
+                                </tr>
+                                <tr>
+                                <td>5. Barracudas relajándose en el arrecife</td><td>21</td><td>25</td><td>9</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="participacion">
                 <div class="panel-body text-center">
-                    <p class="h2 text-thin">Contenido</p>
-                    <i class="fa fa-book fa-3x" aria-hidden="true"></i>
+                    <p class="h2 text-thin">Participación</p>
+                    <i class="fa fa-button fa-5x" aria-hidden="true"></i>
                     <hr>
-                    <p class="text-uppercase mar-btm text-sm"><i class="fa fa-list fa-fw" aria-hidden="true"></i>  60 publicaciones</p>
-                    <table class="tabla" border="2">
-                        <tbody><tr class="header">
-                            <td>Nombre de publicación</td><td>Interacciones</td><td>Visto</td><td>Compartido</td>
-                            </tr>
-                            <tr>
-                            <td>1. Mi hermoso pez dorado</td><td>140</td><td>162</td><td>25</td>
-                            </tr>
-                            <tr>
-                            <td>2. Vengan a ver el lugar favorito de mi calamar</td><td>138</td><td>145</td><td>19</td>
-                            </tr>
-                            <tr>
-                            <td>3. El pulpo Paul adivinando el próximo resultado</td><td>65</td><td>71</td><td>15</td>
-                            </tr>
-                            <tr>
-                            <td>4. Nadando con anguilas eléctricas</td><td>49</td><td>55</td><td>5</td>
-                            </tr>
-                            <tr>
-                            <td>5. Barracudas relajándose en el arrecife</td><td>21</td><td>25</td><td>9</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <p class="h2 text-thin">7,428</p>
+                    <small><span class="text-semibold"><i class="fa fa-user fa-fw" aria-hidden="true"></i> 125</span>  Seguidores</small>
+                    <small><span class="text-semibold"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 985</span>  Vistas al perfil</small>
+                    <small><span class="text-semibold"><i class="fa fa-group fa-fw" aria-hidden="true"></i> 9</span>  Grupos</small>
                 </div>
             </div>
         </div>
-        <div class="participacion">
-            <div class="panel-body text-center">
-                <p class="h2 text-thin">Participación</p>
-                <i class="fa fa-button fa-5x" aria-hidden="true"></i>
-                <hr>
-                <p class="h2 text-thin">7,428</p>
-                <small><span class="text-semibold"><i class="fa fa-user fa-fw" aria-hidden="true"></i> 125</span>  Seguidores</small>
-                <small><span class="text-semibold"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 985</span>  Vistas al perfil</small>
-                <small><span class="text-semibold"><i class="fa fa-group fa-fw" aria-hidden="true"></i> 9</span>  Grupos</small>
-            </div>
-        </div>
-    </body>
+    {% endblock %}
 </html> 
