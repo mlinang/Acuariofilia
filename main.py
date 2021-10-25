@@ -217,10 +217,37 @@ def registro():
                 flash('Woops! Hubo un error. Intenta nuevamente')
     return render_template('registro.html', form=form)
 
-@app.route('/restablecercontrasena')
-def passforget():
-    session.clear()
-    return render_template("restablecercontrasena.html")
+@app.route('/cambiarcontrasena', methods=['GET', 'POST']) #ojo... debe haber siempre una sesion activa
+def changepass():
+    error1 = None
+    form = UserForm()
+    if request.method == 'POST':
+        currentPass = request.form['password']
+        newPass1 = request.form['newPass1']            
+        newPass2 = request.form['newPass2']
+
+        if not check_password_hash(session['password'], currentPass):    #si la clave hash de la sesion activa no coincide con la ingresada
+            error1 = "Error al validar la contraseña actual"   #ojo, si no hay sesión activa da error
+            flash(error1)
+        if newPass1 != newPass2:    #si los dos campos de nueva contraseña no coinciden
+            error1 = "Error al validar la nueva contraseña"
+            flash(error1)
+        else:
+            newPassHash = generate_password_hash(newPass1)  #genera nueva contraseña encriptada
+        if error1 is not None:
+            print(error1)
+            return render_template("cambiarcontrasena.html", form=form)
+        else:
+            db = get_db()
+            sql1 = f'UPDATE User SET password = ? WHERE email = ?'
+            result = db.execute(sql1, (newPassHash, session['correo'])).rowcount
+            db.commit()  
+            if result > 0:
+                flash('Se actualizó la contraseña exitosamente')
+            else:
+                flash('No se pudo actualizar la contraseña')
+            #session.clear()
+    return render_template("cambiarcontrasena.html", form=form)
 
 @app.route('/recordarpassword')
 def recordarpassword():
