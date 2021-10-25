@@ -7,39 +7,29 @@
         <script src="https://kit.fontawesome.com/6880bc3485.js" crossorigin="anonymous"></script>
         <link href="../static/css/sb-admin-2.min.css" rel="stylesheet">
     </head>
-            {% if g.user %}
-            <nav class="navbar navbar-dark bg-dark justify-content-between" style="background-color:#e3f2fd;">
-                <a class="navbar-brand" href="#">AcuarioFilia</a>
-                <form class="form-inline">
-                    <table>
-                        <td>
-                        <div><input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        </td>
-                        <td><div><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button></div></div></td>
-                    </table>
-                </form>
-            </nav>
-                {{ g.user[2] }}
-                <a href="/logout">Cerrar sesión</a>
-            {% else %}
-            
-                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <div class="container-fluid">
-                        <a class="navbar-brand" href="#">AcuarioFilia</a>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/login">Iniciar Sesión</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/registro">Registrarse</a>
-                                </li>s
-                            </ul>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{{'feed'}}">ACUARIOFILIA</a>
+                    <form class="d-flex" form action="{{url_for('search')}}" method="post" enctype="multipart/form-data">
+                        <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success bg-primary bg-dark" type="submit">Search</button>
+                    </form>
+                    
+                    <div class="" id=""> <!-- falta corrgir -->
+                        <div class="">
+                            {% if 'id' in session %}
+                                <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
+                                <!-- hay un bug en el logout realmente no cierra la sesion -->
+                                <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Logout</a> </span>
+                            {% else %}
+                                <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
+                                <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
+                            {% endif %}       
                         </div>
                     </div>
-                </nav>                
+                </div>
+            </nav>
 
-            {% endif %}
 
 
         {% with messages = get_flashed_messages() %}
@@ -74,35 +64,44 @@
             </script>
                 
         {% endblock %}
-        <div class="contenedor">
+        <div class="container  bootstrap snippets bootdey">
             <div class="fila">
-                <div class="colunam-md-8">
-                    <div class="post-content">
-                        <img src="../static/img/elacauriomarinopda.jpg" alt="post-image" class="post-image">
+                <div class="colunam-md-12">
+                    <div class="post-content ">
+                        <img src="../static/images/post/{% print(postsel[0][1]) %}" class="img-fluid" alt=" image">
                             <div class="post-container">
-                                <img src="../static/img/fyenny.jpg" alt="user" class="fotoperfil-md-left">
+                                <img src="../static/images/perfil/{% print(postsel[0][15]) %}" alt="user" class="fotoperfil-md-left">
                                 <div class="post-detail">
                                     <div class="user-info">
-                                        <h5><a href="feed.html" class="profile-link">Yenny</a> <span class="following">following</span></h5>
-                                        <p class="text-muted">Publico una foto hace 2 semanas</p>
+                                        <h5><a href="{{url_for('perfil', codigo = postsel[0][4]) }}" class="profile-link">{% print(postsel[7]) %}</a> <span class="following">following</span></h5>
+                                        <p class="text-muted">Publicada {% print(postsel[3]) %}</p>
                                     </div>
                                     <div class="line-divider"></div>
                                     <div class="post-text">
-                                        <p>Me gusta presumir mis nuevos peces. Que les parecen!?.  </p>
+                                        <p>{% print(postsel[3]) %}  </p>
                                      </div>
                                     <div class="line-divider"></div>
+                                    {% for com in comPost %}
+                                        <div class="post-comment">
+                                            <img src="../static/images/perfil/{% print(com[14]) %}" alt="" class="profile-photo-sm">
+                                            <p><a href="{{url_for('perfil', codigo = com[3]) }}" class="profile-link">{% print(com[6]) %} {% print(com[7]) %}</a> {% print(com[1]) %} </p>
+                                        </div>
+                                    {% endfor %}
                                     <div class="post-comment">
-                                        <img src="../static/img/fpablo.jpg" alt="" class="profile-photo-sm">
-                                        <p><a href="feed.html" class="profile-link">Pablo </a> Son los mejores Yenny. </p>
+                                        <img src="../static/images/perfil/{% print(session['foto']) %}" alt="" class="profile-photo-sm">
+                                        <form class="flex" form action="{{url_for('addcomm', codigo = postsel[0][0])}}" method="post" enctype="multipart/form-data">
+                                            <input class="form-control form-control-user" name="postselect" id="postselect" value=postsel[0][0] hidden>        
+                                            <textarea class="form-control form-control-user" name="comentario" id="comentario" placeholder="Comentar algo"></textarea>
+                                            <div class="col">
+                                                <button class="btn btn-outline-dark" type="submit">Enviar</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="post-comment">
-                                        <img src="../static/img/flucho.jpg" alt="" class="profile-photo-sm">
-                                        <p><a href="feed.html" class="profile-link">Luis B</a> A mi tambien me gustan mucho. </p>
-                                    </div>
-                                    <div class="post-comment">
-                                        <img src="../static/img/flucho.jpg" alt="" class="profile-photo-sm">
-                                        <input type="text" class="form-control" placeholder="Comentar algo">
-                                    </div>
+
+                                    
+                                        
+                                        
+                                    </form>
                                 </div>
                             </div>
                         </div>

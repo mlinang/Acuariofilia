@@ -110,13 +110,18 @@ def deleteProduct():
 
 @app.route('/postdetail')
 def postdetail():
-    id = request.args.get('codigo')
-    sql = "SELECT * FROM Post WHERE id = ?"
+    idp = request.args.get('codigo')
+    sql = f'SELECT * FROM Post , User WHERE User.UserId=Post.UserId AND Post.PostId = {idp}'
     db = get_db()
     cursorObj = db.cursor()
-    cursorObj.execute(sql, (id))
-    posts = cursorObj.fetchall()
-    return render_template("postdetail.html", posts=posts)
+    cursorObj.execute(sql)
+    postsel = cursorObj.fetchall()
+    sql = f'SELECT * from Comments, User WHERE User.UserId=Comments.UserId AND Comments.PostId = {idp}'
+    db = get_db()
+    cursorObj = db.cursor()
+    cursorObj.execute(sql)
+    comPost = cursorObj.fetchall()
+    return render_template("postdetail.html", postsel=postsel,comPost=comPost)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -140,6 +145,7 @@ def login():
                 session['correo'] = usuarios[0][3]
                 session['rol'] = usuarios[0][7]
                 session['password'] = contrasenaHas
+                session['foto'] = usuarios[0][9]
                 if session['rol'] == 2:
                     return redirect(url_for('feed'))                                
                 else:
@@ -272,7 +278,18 @@ def perfil():
         psel = cursorObj.fetchall()[0]
         return render_template("perfil.html", psel=psel)
    
-
+@app.route('/addcomm', methods=['GET','POST'])
+def addcomm():
+    postsel = request.args.get('codigo')
+    form = CommForm()
+    if request.method == 'POST':
+        
+        contenido = request.form['comentario']
+        db = get_db()
+        db.execute('INSERT INTO Comments (Content, PostId, UserId, CreationDate) VALUES(?,?,?,?)', (contenido,postsel,session['id'],datetime.now() ))
+        db.commit()
+        
+    return render_template('postdetail.html')
 
 
 if __name__ == '__main__':    

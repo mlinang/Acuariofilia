@@ -27,6 +27,10 @@ class UserForm(FlaskForm):
 
 class searchForm(FlaskForm):
     palabra = StringField('palabra', validators=[DataRequired(message="Este campo es requerido")], render_kw={"placeholder": "Buscar Usuario"})
+
+class CommForm(FlaskForm):
+    postselect = StringField('postselect', validators=[DataRequired(message="Este campo es requerido")], render_kw={"placeholder": "Comentar algo.."})
+    comentario = StringField('comentario', validators=[DataRequired(message="Este campo es requerido")], render_kw={"placeholder": "Comentar algo.."})
   
 
     
