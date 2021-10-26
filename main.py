@@ -21,10 +21,18 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+'''# Usuario requerido:
+def login_required(view):
+    @functools.wraps( view ) # toma una función utilizada en un decorador y añadir la funcionalidad de copiar el nombre de la función.
+    def wrapped_view(**kwargs):
+        if session['Id'] is None:
+            return redirect( url_for( 'login' ) ) # si no tiene datos, lo envío a que se loguee
+        return view( **kwargs )
+    return wrapped_view'''
 
-
-@app.route('/')
+@app.route('/') 
 @app.route('/feed')
+#@login_required
 def feed():
     #@pablo@ esta condicion es por si alguien escribe directamente /feed en el navegador y no se encuentra logeado lo manda al login
     #probando esto me di cuenta que le doy logout me manda al login, pero si escribo /feed puedo abrirlo porque no ha salido de la sesion. 
@@ -35,14 +43,27 @@ def feed():
         cursorObj = db.cursor()
         cursorObj.execute(sql)
         posts = cursorObj.fetchall()
-        sql =f'SELECT * FROM Post WHERE UserId = "{usu}" order by creationDate desc limit 20'
+        sql =f'SELECT * FROM Post WHERE UserId = {usu} order by creationDate desc limit 20'
         db = get_db()
         cursorObj = db.cursor()
         cursorObj.execute(sql)
         postown = cursorObj.fetchall()
-        return render_template("feed.html", posts=posts, postown=postown)
+        """ return render_template("feed.html", posts=posts, postown=postown) """
+        #@pablo@ active la condicion para que si no tiene una sesion abierta lo envie al login.
+        if 'fullname' in session and (session['rol'] == 1 or session['rol'] ==2) :
+            sql ="SELECT * FROM Post"
+            db = get_db()
+            cursorObj = db.cursor()
+            cursorObj.execute(sql)
+            posts = cursorObj.fetchall()
+            return render_template("feed.html", posts=posts, postown=postown)
+        
+        else:
+            return redirect('login')
+        
     else:
         return redirect('login')
+    
 
 
 @app.route('/addPost', methods=['GET', 'POST'])
@@ -110,18 +131,13 @@ def deleteProduct():
 
 @app.route('/postdetail')
 def postdetail():
-    idp = request.args.get('codigo')
-    sql = f'SELECT * FROM Post , User WHERE User.UserId=Post.UserId AND Post.PostId = {idp}'
+    id = request.args.get('codigo')
+    sql = "SELECT * FROM Post WHERE id = ?"
     db = get_db()
     cursorObj = db.cursor()
-    cursorObj.execute(sql)
-    postsel = cursorObj.fetchall()
-    sql = f'SELECT * from Comments, User WHERE User.UserId=Comments.UserId AND Comments.PostId = {idp}'
-    db = get_db()
-    cursorObj = db.cursor()
-    cursorObj.execute(sql)
-    comPost = cursorObj.fetchall()
-    return render_template("postdetail.html", postsel=postsel,comPost=comPost)
+    cursorObj.execute(sql, (id))
+    posts = cursorObj.fetchall()
+    return render_template("postdetail.html", posts=posts)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -145,7 +161,6 @@ def login():
                 session['correo'] = usuarios[0][3]
                 session['rol'] = usuarios[0][7]
                 session['password'] = contrasenaHas
-                session['foto'] = usuarios[0][9]
                 if session['rol'] == 2:
                     return redirect(url_for('feed'))                                
                 else:
@@ -161,7 +176,6 @@ def login():
 def logout():
     if 'id' in session:
         session.pop('id')
-        session.clear()
     return redirect(url_for('feed'))
 
 @app.route('/registro', methods=['GET', 'POST'])
@@ -238,12 +252,12 @@ def changepass():
                 flash('Se actualizó la contraseña exitosamente')
             else:
                 flash('No se pudo actualizar la contraseña')
-            #session.clear()        #OJO: la contraseña antigua queda guardada en la variable de la sesion inicial
+            #session.clear()
     return render_template("cambiarcontrasena.html", form=form)
 
-@app.route('/restablecercontrasena')
-def restablecercontrasena():
-    return render_template("restablecercontrasena.html") 
+@app.route('/recordarpassword')
+def recordarpassword():
+    return render_template("recordarpassword.html") 
 
 @app.route('/dashboard')
 def dashboard():
@@ -269,29 +283,7 @@ def search():
 
 @app.route('/perfil')
 def perfil():
-    form = UserForm()
-    if request.method == 'GET':
-        idsel = request.args.get('codigo')
-        sql = f'SELECT * FROM User WHERE UserId = {idsel}'
-        db = get_db()
-        cursorObj = db.cursor()
-        cursorObj.execute(sql)
-        psel = cursorObj.fetchall()[0]
-        return render_template("perfil.html", psel=psel)
-   
-@app.route('/addcomm', methods=['GET','POST'])
-def addcomm():
-    postsel = request.args.get('codigo')
-    form = CommForm()
-    if request.method == 'POST':
-        
-        contenido = request.form['comentario']
-        db = get_db()
-        db.execute('INSERT INTO Comments (Content, PostId, UserId, CreationDate) VALUES(?,?,?,?)', (contenido,postsel,session['id'],datetime.now() ))
-        db.commit()
-    return redirect(url_for('postdetail', codigo = postsel))
-
-    
+    return render_template("perfil.html") 
 
 if __name__ == '__main__':    
     app.run(debug=True, host='127.0.0.1', port =443)
