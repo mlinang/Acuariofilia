@@ -9,7 +9,18 @@ body{margin-top:20px;}
   overflow: hidden;
   position: relative;
 }
-
+.contenedorLogin{
+  height: 40px;
+  width: 350px;
+  display: flex;
+  flex-direction: row-reverse;
+}
+.av-user-icon{
+  align-self: center;
+}
+.d-flex{
+  width: 50%;
+}
 .post-content img.post-image{
   width: 60vw;
   height: auto;

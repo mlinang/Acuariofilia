@@ -14,22 +14,26 @@
                         <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success bg-primary bg-dark" type="submit">Search</button>
                     </form>
-                    
-                    <div class="" id=""> <!-- falta corrgir -->
-                        <div class="">
-                            {% if 'id' in session %}
-                                <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
-                                <!-- hay un bug en el logout realmente no cierra la sesion -->
-                                <div class="av-user-icon">
-                                    <img src="../static/images/perfil/{% print(postsel[0][15]) %}" alt="user" class="fotoperfil-md-left">
-                                </div>
-                                <span class="navbar-text p-2 bd-highlight"> <a href="{{'logout'}}">Logout</a> </span>
-                            {% else %}
-                                <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
-                                <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
-                            {% endif %}       
+                {% if 'id' in session %}
+                                        <!-- hay un bug en el logout realmente no cierra la sesion -->
+                    <div class="contenedorLogin">
+                        <div class="logout">
+                            <span class="navbar-text p-2 bd-highlight"> <a href="{{'logout'}}">Logout</a> </span>
                         </div>
+                        <div class="fullname">
+                            <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
+                        </div>
+                        <div class="av-user-icon">
+                            <a href="{{url_for('perfil', codigo = session['id']) }}"><img src="../static/images/perfil/{% print(postsel[0][15]) %}" alt="user" class="fotoperfil-md-left"></a>
+                        </div>
+                        
+                        
+                    {% else %}
+                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
+                        <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
                     </div>
+                    {% endif %}       
+
                 </div>
             </nav>
 
@@ -73,17 +77,14 @@
                     <div class="post-content ">
                         <img src="../static/images/post/{% print(postsel[0][1]) %}" class="img-fluid" alt=" image">
                             <div class="post-container">
-                                <img src="../static/images/perfil/{% print(postsel[0][15]) %}" alt="user" class="fotoperfil-md-left">
+                                <a href="{{url_for('perfil', codigo = session['id']) }}"><img src="../static/images/perfil/{% print(postsel[0][15]) %}" alt="user" class="fotoperfil-md-left"></a>
                                 <div class="post-detail">
                                     <div class="user-info">
-                                        <h5><a href="{{url_for('perfil', codigo = postsel[0][4]) }}" class="profile-link">{% print(postsel[7]) %}</a> <span class="following">following</span></h5>
                                         <p class="text-muted">Publicada {% print(postsel[3]) %}</p>
                                     </div>
-                                    <div class="line-divider"></div>
                                     <div class="post-text">
                                         <p>{% print(postsel[3]) %}  </p>
                                      </div>
-                                    <div class="line-divider"></div>
                                     {% for com in comPost %}
                                         <div class="post-comment">
                                             <img src="../static/images/perfil/{% print(com[14]) %}" alt="" class="profile-photo-sm">
@@ -100,10 +101,6 @@
                                             </div>
                                         </form>
                                     </div>
-
-                                    
-                                        
-                                        
                                     </form>
                                 </div>
                             </div>

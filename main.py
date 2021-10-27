@@ -21,10 +21,18 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+'''# Usuario requerido:
+def login_required(view):
+    @functools.wraps( view ) # toma una función utilizada en un decorador y añadir la funcionalidad de copiar el nombre de la función.
+    def wrapped_view(**kwargs):
+        if session['Id'] is None:
+            return redirect( url_for( 'login' ) ) # si no tiene datos, lo envío a que se loguee
+        return view( **kwargs )
+    return wrapped_view'''
 
-
-@app.route('/')
+@app.route('/') 
 @app.route('/feed')
+#@login_required
 def feed():
     #@pablo@ esta condicion es por si alguien escribe directamente /feed en el navegador y no se encuentra logeado lo manda al login
     #probando esto me di cuenta que le doy logout me manda al login, pero si escribo /feed puedo abrirlo porque no ha salido de la sesion. 
@@ -35,14 +43,27 @@ def feed():
         cursorObj = db.cursor()
         cursorObj.execute(sql)
         posts = cursorObj.fetchall()
-        sql =f'SELECT * FROM Post WHERE UserId = "{usu}" order by creationDate desc limit 20'
+        sql =f'SELECT * FROM Post WHERE UserId = {usu} order by creationDate desc limit 20'
         db = get_db()
         cursorObj = db.cursor()
         cursorObj.execute(sql)
         postown = cursorObj.fetchall()
-        return render_template("feed.html", posts=posts, postown=postown)
+        """ return render_template("feed.html", posts=posts, postown=postown) """
+        #@pablo@ active la condicion para que si no tiene una sesion abierta lo envie al login.
+        if 'fullname' in session and (session['rol'] == 1 or session['rol'] ==2) :
+            sql ="SELECT * FROM Post"
+            db = get_db()
+            cursorObj = db.cursor()
+            cursorObj.execute(sql)
+            posts = cursorObj.fetchall()
+            return render_template("feed.html", posts=posts, postown=postown)
+        
+        else:
+            return redirect('login')
+        
     else:
         return redirect('login')
+    
 
 
 @app.route('/addPost', methods=['GET', 'POST'])
@@ -125,6 +146,7 @@ def postdetail():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    
     error = ""
     form = LoginForm()
     if(form.validate_on_submit()):                
@@ -157,10 +179,11 @@ def login():
                 flash(f'Usuario y/o Clave incorrecta')             
     return render_template("login.html", form=form)
 
+
 @app.route('/logout')
 def logout():
     if 'id' in session:
-        session.pop('id')
+        #session.pop('id')
         session.clear()
     return redirect(url_for('feed'))
 
@@ -238,7 +261,7 @@ def changepass():
                 flash('Se actualizó la contraseña exitosamente')
             else:
                 flash('No se pudo actualizar la contraseña')
-            #session.clear()        #OJO: la contraseña antigua queda guardada en la variable de la sesion inicial
+            #session.clear()
     return render_template("cambiarcontrasena.html", form=form)
 
 @app.route('/restablecercontrasena')
@@ -296,9 +319,3 @@ def addcomm():
 if __name__ == '__main__':    
     app.run(debug=True, host='127.0.0.1', port =443)
     #, ssl_context=('micertificado.pem', 'llaveprivada.pem'))
-
-   
-
-
-
-
