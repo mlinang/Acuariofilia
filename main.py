@@ -313,7 +313,7 @@ def addcomm():
         db.execute('INSERT INTO Comments (Content, PostId, UserId, CreationDate) VALUES(?,?,?,?)', (contenido,postsel,session['id'],datetime.now() ))
         db.commit()
         
-    return render_template('postdetail.html')
+    return redirect(url_for('postdetail', codigo = postsel))
 
 
 if __name__ == '__main__':    
