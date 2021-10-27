@@ -131,16 +131,22 @@ def deleteProduct():
 
 @app.route('/postdetail')
 def postdetail():
-    id = request.args.get('codigo')
-    sql = "SELECT * FROM Post WHERE id = ?"
+    idp = request.args.get('codigo')
+    sql = f'SELECT * FROM Post , User WHERE User.UserId=Post.UserId AND Post.PostId = {idp}'
     db = get_db()
     cursorObj = db.cursor()
-    cursorObj.execute(sql, (id))
-    posts = cursorObj.fetchall()
-    return render_template("postdetail.html", posts=posts)
+    cursorObj.execute(sql)
+    postsel = cursorObj.fetchall()
+    sql = f'SELECT * from Comments, User WHERE User.UserId=Comments.UserId AND Comments.PostId = {idp}'
+    db = get_db()
+    cursorObj = db.cursor()
+    cursorObj.execute(sql)
+    comPost = cursorObj.fetchall()
+    return render_template("postdetail.html", postsel=postsel,comPost=comPost)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    
     error = ""
     form = LoginForm()
     if(form.validate_on_submit()):                
@@ -161,6 +167,7 @@ def login():
                 session['correo'] = usuarios[0][3]
                 session['rol'] = usuarios[0][7]
                 session['password'] = contrasenaHas
+                session['foto'] = usuarios[0][9]
                 if session['rol'] == 2:
                     return redirect(url_for('feed'))                                
                 else:
@@ -172,10 +179,12 @@ def login():
                 flash(f'Usuario y/o Clave incorrecta')             
     return render_template("login.html", form=form)
 
+
 @app.route('/logout')
 def logout():
     if 'id' in session:
         session.pop('id')
+        session.clear()
     return redirect(url_for('feed'))
 
 @app.route('/registro', methods=['GET', 'POST'])
@@ -255,9 +264,9 @@ def changepass():
             #session.clear()
     return render_template("cambiarcontrasena.html", form=form)
 
-@app.route('/recordarpassword')
-def recordarpassword():
-    return render_template("recordarpassword.html") 
+@app.route('/restablecercontrasena')
+def restablecercontrasena():
+    return render_template("restablecercontrasena.html") 
 
 @app.route('/dashboard')
 def dashboard():
@@ -283,14 +292,30 @@ def search():
 
 @app.route('/perfil')
 def perfil():
-    return render_template("perfil.html") 
+    form = UserForm()
+    if request.method == 'GET':
+        idsel = request.args.get('codigo')
+        sql = f'SELECT * FROM User WHERE UserId = {idsel}'
+        db = get_db()
+        cursorObj = db.cursor()
+        cursorObj.execute(sql)
+        psel = cursorObj.fetchall()[0]
+        return render_template("perfil.html", psel=psel)
+   
+@app.route('/addcomm', methods=['GET','POST'])
+def addcomm():
+    postsel = request.args.get('codigo')
+    form = CommForm()
+    if request.method == 'POST':
+        
+        contenido = request.form['comentario']
+        db = get_db()
+        db.execute('INSERT INTO Comments (Content, PostId, UserId, CreationDate) VALUES(?,?,?,?)', (contenido,postsel,session['id'],datetime.now() ))
+        db.commit()
+        
+    return render_template('postdetail.html')
+
 
 if __name__ == '__main__':    
     app.run(debug=True, host='127.0.0.1', port =443)
     #, ssl_context=('micertificado.pem', 'llaveprivada.pem'))
-
-   
-
-
-
-
