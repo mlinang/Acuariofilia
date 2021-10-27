@@ -44,14 +44,16 @@
                                                 <i class="fas fa-search h4 text-body"></i>
                                             </div>
                                             <!--end of col-->
-                                            <div class="col">
-                                                <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Busca personas o temas de publicaciones">
-                                            </div>
+                                            <form class="d-flex" form action="{{url_for('search')}}" method="post" enctype="multipart/form-data">
+                                                <div class="col">
+                                                    <input class="form-control form-control-lg form-control-borderless" name="palabra" type="search" placeholder="Busca personas">
+                                                </div>
+                                                <!--end of col-->
+                                                <div class="col-auto">
+                                                    <button class="btn btn-lg btn-success" type="submit">Search</button>
+                                                </div>
                                             <!--end of col-->
-                                            <div class="col-auto">
-                                                <button class="btn btn-lg btn-success" type="submit">Search</button>
-                                            </div>
-                                            <!--end of col-->
+                                            </form>
                                         </div>
                                     </form>
                                 </div>
@@ -85,6 +87,9 @@
                                         </div>
                                         <div class="col-sm-3 text-align-center">
                                         <p class="fs-mini text-muted">2,898 publicaciones</p><a class="btn btn-primary btn-info btn-sm" href="{{url_for('perfil', codigo = pfound[0]) }}">Ver perfil</a>
+                                        {% if session['rol']== 1 %}
+                                            <a class="btn btn-danger btn-info btn-sm" id="borrarusuario" href="#">Eliminar</a>
+                                        {% endif %}
                                         </div>
                                     </div>
                                 </div>

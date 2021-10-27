@@ -132,7 +132,7 @@ def deleteProduct():
 @app.route('/postdetail')
 def postdetail():
     idp = request.args.get('codigo')
-    sql = f'SELECT * FROM Post , User WHERE User.UserId=Post.UserId AND Post.PostId = {idp}'
+    sql = f'SELECT * FROM Post, User WHERE User.UserId=Post.UserId AND Post.PostId = {idp}'
     db = get_db()
     cursorObj = db.cursor()
     cursorObj.execute(sql)
