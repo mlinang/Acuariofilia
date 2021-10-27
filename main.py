@@ -183,7 +183,7 @@ def login():
 @app.route('/logout')
 def logout():
     if 'id' in session:
-        session.pop('id')
+        #session.pop('id')
         session.clear()
     return redirect(url_for('feed'))
 
