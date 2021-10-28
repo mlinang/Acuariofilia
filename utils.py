@@ -1,7 +1,7 @@
 import re
 from validate_email import validate_email   
 
-pass_reguex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{5,}$"
+pass_reguex = "^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{5,16}$"
 user_reguex = "^[a-zA-Z0-9_.-]+$"
 F_ACTIVE = 'ACTIVE'
 F_INACTIVE = 'INACTIVE'

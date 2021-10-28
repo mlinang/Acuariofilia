@@ -247,7 +247,7 @@ def registro():
             error = "El correo ingresado es inválido"
             flash(error)
         if not isPasswordValid(password):
-            error = "La contraseña debe contener al menos una minúscula, una mayúscula, un número y 5 caracteres"
+            error = "La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula, sin caracteres especiales."
             flash(error)
         if error is not None:
             # Ocurrió un error
@@ -281,7 +281,7 @@ def changepass():
             error1 = "Error al validar la nueva contraseña"
             flash(error1)
         if not isPasswordValid(newPass1):
-            error1= "La contraseña debe contener al menos una minúscula, una mayúscula, un número y 5 caracteres"
+            error1= "La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula, sin caracteres especiales."
             flash(error1)
         else:
             newPassHash = generate_password_hash(newPass1)  #genera nueva contraseña encriptada
