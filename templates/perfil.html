@@ -70,8 +70,12 @@
                     <div class="menu">
                         <ul class="nav nav-pills nav-stacked">
                             <li class="active"><a href="{{'feed'}}"> <i class="fas fa-home"></i>Inicio</a></li>
-                            <li><a href="#"> <i class="fa fa-edit"></i> Edit profile</a></li>
-                            <li><a href="#"> <i class="fa fa-user-times"></i> Borrar Perfil</a></li>
+                            {%if session['id']==psel[0]%}
+                                <li><a href="{{'dashboard'}}"> <i class="fa fa-edit"></i> Edit profile</a></li>
+                            {%endif%}
+                            {%if session['role']==1%}
+                                <li><a href="#"> <i class="fa fa-user-times"></i> Borrar Perfil</a></li>
+                            {%endif%}
                         </ul>
                     </div>
                 </div>
