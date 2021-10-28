@@ -137,6 +137,12 @@ def deletePost():
     db = get_db()
     db.execute(sql)
     db.commit()
+
+    sql = f'DELETE FROM Comments WHERE PostId = {postId}'
+    db = get_db()
+    db.execute(sql)
+    db.commit()
+
     db.close()
     flash('Post eliminado exitosamente')
     return redirect(url_for('feed'))
