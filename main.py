@@ -312,7 +312,7 @@ def perfil():
    
 @app.route('/addcomm', methods=['GET','POST'])
 def addcomm():
-    postsel = request.args.get('codigo')
+    postsel = request.args.get('codigo') #recupera el valor de la variable codigo enviada por GET
     form = CommForm()
     if request.method == 'POST':
         
@@ -321,7 +321,7 @@ def addcomm():
         db.execute('INSERT INTO Comments (Content, PostId, UserId, CreationDate) VALUES(?,?,?,?)', (contenido,postsel,session['id'],datetime.now() ))
         db.commit()
         
-    return render_template('postdetail.html')
+    return redirect(url_for('postdetail', codigo=postsel))
 
 
 if __name__ == '__main__':    

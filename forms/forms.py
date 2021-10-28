@@ -3,8 +3,6 @@ from wtforms import StringField, PasswordField, BooleanField, IntegerField, Sele
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired
 
-
-
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(message="Este campo es requerido")])
     password = PasswordField('Password', validators=[DataRequired(message="Este campo es requerido")])
