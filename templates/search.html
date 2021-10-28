@@ -38,7 +38,7 @@
             <br/>
             <div class="row justify-content-center">
                                 <div class="col-12 col-md-10 col-lg-8">
-                                    <form class="card card-sm">
+                                    <form class="card card-sm" form action="{{url_for('search')}}" method="post" enctype="multipart/form-data">
                                         <div class="card-body row no-gutters align-items-center">
                                             <div class="col-auto">
                                                 <i class="fas fa-search h4 text-body"></i>
@@ -88,14 +88,14 @@
                                         <div class="col-sm-3 text-align-center">
                                         <p class="fs-mini text-muted">2,898 publicaciones</p><a class="btn btn-primary btn-info btn-sm" href="{{url_for('perfil', codigo = pfound[0]) }}">Ver perfil</a>
                                         {% if session['rol']== 1 %}
-                                            <a class="btn btn-danger btn-info btn-sm" id="borrarusuario" href="#">Eliminar</a>
+                                            <a class="btn btn-danger btn-info btn-sm" id="borrarusuario" href="{{url_for('deleteUser', userId = pfound[0] ) }}">Eliminar</a>
                                         {% endif %}
                                         </div>
                                     </div>
                                 </div>
                             </section>        
                         {% endfor %} 
-                        
+
                         {% for pub in posts %}
                         {%if pub[4] != session['id']%}
                             <div class="novedad">
@@ -109,7 +109,8 @@
                                     <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="favoritos"><i class="fas fa-heart"></i> </a>
                                     {% print(pub[4]) %}
         
-                                    <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
+                                    <button role="button" class="retweets"><i class="fas fa-trash"></i> 100</button>
+                                    
                                 </div>
                             </div>
                         {%endif%}

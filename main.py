@@ -118,16 +118,39 @@ def editProduct():
         return redirect(url_for('product'))
         
 
-@app.route('/deleteProduct', methods=['GET', 'POST'])
-def deleteProduct():
-    id = request.args.get('id')
-    sql = "DELETE FROM products WHERE id = ?"
+@app.route('/deleteComm', methods=['GET', 'POST'])
+def deleteComm():
+    id = request.args.get('codigo')
+    postId=request.args.get('postId')
+    sql = f'DELETE FROM Comments WHERE CommentId = {id}'
     db = get_db()
-    db.execute(sql, (id))
+    db.execute(sql)
     db.commit()
     db.close()
-    flash('Registro eliminado exitosamente')
-    return redirect(url_for('product'))
+    flash('Comentario eliminado exitosamente')
+    return redirect(url_for('postdetail', codigo=postId))
+
+@app.route('/deletePost', methods=['GET', 'POST'])
+def deletePost():
+    postId=request.args.get('codigo')
+    sql = f'DELETE FROM Post WHERE PostId = {postId}'
+    db = get_db()
+    db.execute(sql)
+    db.commit()
+    db.close()
+    flash('Post eliminado exitosamente')
+    return redirect(url_for('feed'))
+
+@app.route('/deleteUser', methods=['GET', 'POST'])
+def deleteUser():
+    userId = request.args.get('userId')
+    sql = f'DELETE FROM User WHERE UserId = {userId}'
+    db = get_db()
+    db.execute(sql)
+    db.commit()
+    db.close()
+    flash('Usuario eliminado exitosamente')
+    return redirect( url_for('postdetail', codigo=userId) )
 
 @app.route('/postdetail')
 def postdetail():
@@ -212,7 +235,7 @@ def registro():
         if not isEmailValid(email):
             error = "El correo ingresado es inválido"
             flash(error)
-        if not isPasswordValid(newPass1):
+        if not isPasswordValid(password):
             error = "La contraseña debe contener al menos una minúscula, una mayúscula, un número y 5 caracteres"
             flash(error)
         if error is not None:
@@ -267,6 +290,19 @@ def changepass():
             #session.clear()
     return render_template("cambiarcontrasena.html", form=form)
 
+@app.route('/makeAdmin', methods=['GET', 'POST']) #ojo... debe haber siempre una sesion activa
+def makeAdmin():
+    userId = request.args.get('userId')
+    db = get_db()
+    sql1 = f'UPDATE User SET role = ? WHERE UserId = ?'
+    result = db.execute(sql1, (1, userId)).rowcount  #rol 1: admin, al usuario del post seleccionado
+    db.commit()  
+    if result > 0:
+        flash('Se han otorgado privilegios de administrador al usuario de forma exitosa')
+    else:
+        flash('No se pudo hacer el ascenso')
+    return redirect(url_for('perfil', codigo=userId))
+
 @app.route('/restablecercontrasena')
 def restablecercontrasena():
     return render_template("restablecercontrasena.html") 
@@ -313,7 +349,7 @@ def perfil():
 @app.route('/addcomm', methods=['GET','POST'])
 def addcomm():
     postsel = request.args.get('codigo') #recupera el valor de la variable codigo enviada por GET
-    form = CommForm()
+    form = CommForm() #realmente se usa?
     if request.method == 'POST':
         
         contenido = request.form['comentario']
