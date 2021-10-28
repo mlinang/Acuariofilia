@@ -212,9 +212,9 @@ def registro():
         if not isEmailValid(email):
             error = "El correo ingresado es inválido"
             flash(error)
-        #if not isPasswordValid(password):
-            #error = "La contraseña debe contener al menos una minúscula, una mayúscula, un número y 5 caracteres"
-            #flash(error)
+        if not isPasswordValid(newPass1):
+            error = "La contraseña debe contener al menos una minúscula, una mayúscula, un número y 5 caracteres"
+            flash(error)
         if error is not None:
             # Ocurrió un error
             print(error)
@@ -246,11 +246,15 @@ def changepass():
         if newPass1 != newPass2:    #si los dos campos de nueva contraseña no coinciden
             error1 = "Error al validar la nueva contraseña"
             flash(error1)
+        if not isPasswordValid(newPass1):
+            error1= "La contraseña debe contener al menos una minúscula, una mayúscula, un número y 5 caracteres"
+            flash(error1)
         else:
             newPassHash = generate_password_hash(newPass1)  #genera nueva contraseña encriptada
         if error1 is not None:
             print(error1)
             return render_template("cambiarcontrasena.html", form=form)
+
         else:
             db = get_db()
             sql1 = f'UPDATE User SET password = ? WHERE email = ?'
@@ -281,8 +285,13 @@ def search():
         cursorObj = db.cursor()
         cursorObj.execute(sql)       
         Sresult = cursorObj.fetchall()
-        if len(Sresult) > 0:
-            return render_template("search.html", Sresult=Sresult)                               
+
+        clave2 = request.form['palabra']
+        sql2 = f'SELECT * FROM Post WHERE title LIKE "%{clave}%"'
+        cursorObj.execute(sql2)       
+        posts = cursorObj.fetchall()
+        if len(Sresult) or len(posts) > 0:
+            return render_template("search.html", Sresult=Sresult, posts=posts)                               
         else:
             flash(f'La busqueda no arrojo resultados')
             return redirect(url_for('feed'))
