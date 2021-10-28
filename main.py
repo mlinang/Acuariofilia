@@ -21,15 +21,6 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
-'''# Usuario requerido:
-def login_required(view):
-    @functools.wraps( view ) # toma una función utilizada en un decorador y añadir la funcionalidad de copiar el nombre de la función.
-    def wrapped_view(**kwargs):
-        if session['Id'] is None:
-            return redirect( url_for( 'login' ) ) # si no tiene datos, lo envío a que se loguee
-        return view( **kwargs )
-    return wrapped_view'''
-
 @app.route('/') 
 @app.route('/feed')
 #@login_required
@@ -39,23 +30,14 @@ def feed():
     if 'fullname' in session:
         usu= session['id']
         sql ="SELECT * FROM Post order by creationDate desc limit 10"
-        db = get_db()
-        cursorObj = db.cursor()
-        cursorObj.execute(sql)
-        posts = cursorObj.fetchall()
+        posts = selectSQLite(sql)
         sql =f'SELECT * FROM Post WHERE UserId = {usu} order by creationDate desc limit 20'
-        db = get_db()
-        cursorObj = db.cursor()
-        cursorObj.execute(sql)
-        postown = cursorObj.fetchall()
+        postown = selectSQLite(sql)
         """ return render_template("feed.html", posts=posts, postown=postown) """
         #@pablo@ active la condicion para que si no tiene una sesion abierta lo envie al login.
         if 'fullname' in session and (session['rol'] == 1 or session['rol'] ==2) :
             sql ="SELECT * FROM Post"
-            db = get_db()
-            cursorObj = db.cursor()
-            cursorObj.execute(sql)
-            posts = cursorObj.fetchall()
+            posts = selectSQLite(sql)
             return render_template("feed.html", posts=posts, postown=postown)
         
         else:
@@ -63,8 +45,6 @@ def feed():
         
     else:
         return redirect('login')
-    
-
 
 @app.route('/addPost', methods=['GET', 'POST'])
 def addPost():
@@ -74,130 +54,65 @@ def addPost():
         imagen = request.files['imagen']
         filename = secure_filename(imagen.filename)
         imagen.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))     
-        
         db = get_db()
         db.execute('INSERT INTO Post (PhotoURL,Title, creationDate, UserId) VALUES(?,?,?,?)', (filename,nombre, datetime.now(), session['id']))
         db.commit()
         mensajeExitoso ="Registro exitoso"
         return redirect(url_for('feed', mensajeExitoso=mensajeExitoso))
     return render_template('addPost.html', form=form)
-
-@app.route('/editProduct', methods=['GET', 'POST'])
-def editProduct():
-    id = request.args.get('id')
-    if request.method == 'GET':
-        form = Postform()
-        db = get_db()
-        sql = f'SELECT * FROM Post WHERE id = {id}'
-        cursorObj = db.cursor()
-        cursorObj.execute(sql)
-        products = cursorObj.fetchall()[0]
-        return render_template('editProduct.html', form=form, products=products)
-    
-    if request.method == 'POST':
-        id = request.form['id']
-        nombre = request.form['nombre']
-        descripcion = request.form['descripcion']
-        precio = request.form['precio']
-        cantidad = request.form['cantidad']
-        estado = request.form['estado']
-        imagen = request.files['imagen']
-        if imagen.filename != "":
-            filename = secure_filename(imagen.filename)
-            imagen.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))     
-        else:
-            filename = request.form['filename']        
-        db = get_db()
-        sql = 'UPDATE products SET nombre = ?, descripcion = ?, precio = ?, cantidad = ?, url = ?, estado = ? WHERE id = ?'        
-        result = db.execute(sql, (nombre, descripcion, precio, cantidad, filename, estado, id)).rowcount
-        db.commit()
-        if result > 0:
-            flash('Se actualizó el registro exitosamente')
-        else:
-            flash('No se pudo actualizar el registro')            
-        return redirect(url_for('product'))
-        
-
+       
 @app.route('/deleteComm', methods=['GET', 'POST'])
 def deleteComm():
+    msg='Post eliminado exitosamente'
     id = request.args.get('codigo')
     postId=request.args.get('postId')
     sql = f'DELETE FROM Comments WHERE CommentId = {id}'
-    db = get_db()
-    db.execute(sql)
-    db.commit()
-    db.close()
-    flash('Comentario eliminado exitosamente')
+    updateSQLite(sql,"cerrar")
+    flash(msg)
     return redirect(url_for('postdetail', codigo=postId))
 
 @app.route('/deletePost', methods=['GET', 'POST'])
 def deletePost():
+    msg='Post eliminado exitosamente'
     postId=request.args.get('codigo')
     sql = f'DELETE FROM Post WHERE PostId = {postId}'
-    db = get_db()
-    db.execute(sql)
-    db.commit()
-
+    updateSQLite(sql,"nada")
     sql = f'DELETE FROM Comments WHERE PostId = {postId}'
-    db = get_db()
-    db.execute(sql)
-    db.commit()
-
-    db.close()
-    flash('Post eliminado exitosamente')
+    updateSQLite(sql,"cerrar")
+    flash(msg)
     return redirect(url_for('feed'))
 
 @app.route('/deleteUser', methods=['GET', 'POST'])
 def deleteUser():
+    msg='Usuario eliminado exitosamente'
     userId = request.args.get('userId')
     sql = f'DELETE FROM User WHERE UserId = {userId}'
-    db = get_db()
-    db.execute(sql)
-    db.commit()
-
+    updateSQLite(sql,"nada")
     sql = f'DELETE FROM Post WHERE UserId = {userId}'
-    db = get_db()
-    db.execute(sql)
-    db.commit()
-
+    updateSQLite(sql,"nada")
     sql = f'DELETE FROM Comments WHERE UserId = {userId}'
-    db = get_db()
-    db.execute(sql)
-    db.commit()
-
-    db.close()
-    flash('Usuario eliminado exitosamente')
+    updateSQLite(sql,"cerrar")
+    flash(msg)
     return redirect( url_for('search', codigo=userId) )
 
 @app.route('/postdetail')
 def postdetail():
     idp = request.args.get('codigo')
     sql = f'SELECT * FROM Post , User WHERE User.UserId=Post.UserId AND Post.PostId = {idp}'
-    db = get_db()
-    cursorObj = db.cursor()
-    cursorObj.execute(sql)
-    postsel = cursorObj.fetchall()
+    postsel= selectSQLite(sql)
     sql = f'SELECT * from Comments, User WHERE User.UserId=Comments.UserId AND Comments.PostId = {idp}'
-    db = get_db()
-    cursorObj = db.cursor()
-    cursorObj.execute(sql)
-    comPost = cursorObj.fetchall()
+    comPost= selectSQLite(sql)
     return render_template("postdetail.html", postsel=postsel,comPost=comPost)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    
     error = ""
     form = LoginForm()
     if(form.validate_on_submit()):                
-       
         email = escape(form.email.data.strip())
         password = escape(form.password.data.strip())
-        sql = f'SELECT * FROM User WHERE email = "{email}"'
-        db = get_db()
-        cursorObj = db.cursor()
-        cursorObj.execute(sql)       
-        usuarios = cursorObj.fetchall()
+        sql = f'SELECT * FROM User WHERE email = "{email}"'       
+        usuarios =selectSQLite(sql)
         if len(usuarios) > 0:
             contrasenaHas = usuarios[0][4]
             if check_password_hash(contrasenaHas, password):            
@@ -240,13 +155,10 @@ def registro():
         CreationDate= datetime.now()
         
         #Si el correo es valido, si el correo existe, si el password es valido
-        sql1 = f'SELECT * FROM User WHERE email = "{email}"'
-        db1 = get_db()
-        cursorObj1 = db1.cursor()
-        cursorObj1.execute(sql1)       
-        usuarios1 = cursorObj1.fetchall()
+        sql = f'SELECT * FROM User WHERE email = "{email}"'   
+        usuarios = selectSQLite(sql)
         error = None
-        if len(usuarios1) > 0:  #si ya existe un usuario con ese email
+        if len(usuarios) > 0:  #si ya existe un usuario con ese email
             error = "El correo ingresado ya se encuentra en uso"
             flash(error)
         if not isEmailValid(email):
@@ -304,20 +216,14 @@ def changepass():
                 flash('Se actualizó la contraseña exitosamente')
             else:
                 flash('No se pudo actualizar la contraseña')
-            #session.clear()
     return render_template("cambiarcontrasena.html", form=form)
 
 @app.route('/makeAdmin', methods=['GET', 'POST']) #ojo... debe haber siempre una sesion activa
 def makeAdmin():
     userId = request.args.get('userId')
-    db = get_db()
-    sql1 = f'UPDATE User SET role = ? WHERE UserId = ?'
-    result = db.execute(sql1, (1, userId)).rowcount  #rol 1: admin, al usuario del post seleccionado
-    db.commit()  
-    if result > 0:
-        flash('Se han otorgado privilegios de administrador al usuario de forma exitosa')
-    else:
-        flash('No se pudo hacer el ascenso')
+    sql = f'UPDATE User SET role = 1 WHERE UserId = {userId}' #rol 1: admin, al usuario del post seleccionado
+    updateSQLite(sql, "cerrar")
+    flash('Se han otorgado privilegios de administrador al usuario de forma exitosa')
     return redirect(url_for('perfil', codigo=userId))
 
 @app.route('/restablecercontrasena')
@@ -333,16 +239,10 @@ def search():
     form = searchForm()
     if request.method == 'POST':
         clave = request.form['palabra']
-        sql = f'SELECT UserId,name, lastname, email,birthay,gender,CreationDate,ProfilePicURL FROM User WHERE name LIKE "%{clave}%" OR lastname LIKE "%{clave}%"'
-        db = get_db()
-        cursorObj = db.cursor()
-        cursorObj.execute(sql)       
-        Sresult = cursorObj.fetchall()
-
-        clave2 = request.form['palabra']
-        sql2 = f'SELECT * FROM Post WHERE title LIKE "%{clave}%"'
-        cursorObj.execute(sql2)       
-        posts = cursorObj.fetchall()
+        sql = f'SELECT UserId,name, lastname, email,birthay,gender,CreationDate,ProfilePicURL FROM User WHERE name LIKE "%{clave}%" OR lastname LIKE "%{clave}%"'   
+        Sresult = selectSQLite(sql)
+        sql = f'SELECT * FROM Post WHERE title LIKE "%{clave}%"'    
+        posts = selectSQLite(sql)
         if len(Sresult) or len(posts) > 0:
             return render_template("search.html", Sresult=Sresult, posts=posts)                               
         else:
@@ -357,26 +257,40 @@ def perfil():
     if request.method == 'GET':
         idsel = request.args.get('codigo')
         sql = f'SELECT * FROM User WHERE UserId = {idsel}'
-        db = get_db()
-        cursorObj = db.cursor()
-        cursorObj.execute(sql)
-        psel = cursorObj.fetchall()[0]
-        return render_template("perfil.html", psel=psel)
+        psel = selectSQLite(sql)
+        return render_template("perfil.html", psel=psel[0])
    
 @app.route('/addcomm', methods=['GET','POST'])
 def addcomm():
     postsel = request.args.get('codigo') #recupera el valor de la variable codigo enviada por GET
-    form = CommForm() #realmente se usa?
+    contenido = request.form['comentario']
+    id=session['id']
+    time= datetime.now()
     if request.method == 'POST':
-        
-        contenido = request.form['comentario']
-        db = get_db()
-        db.execute('INSERT INTO Comments (Content, PostId, UserId, CreationDate) VALUES(?,?,?,?)', (contenido,postsel,session['id'],datetime.now() ))
-        db.commit()
+        sql=(f'INSERT INTO Comments (Content, PostId, UserId, CreationDate) VALUES({contenido},{postsel},{id},{time})')
+        updateSQLite(sql, "cerrar")
         
     return redirect(url_for('postdetail', codigo=postsel))
+
+
+def updateSQLite(sql, accion): #accion es para indicar que se puede cerrar la instancia de la base de datos.
+    db = get_db()
+    db.execute(sql)
+    db.commit()
+    if  accion=="cerrar":
+        db.close()
+
+def selectSQLite(sql):
+    db = get_db()
+    cursorObj = db.cursor()
+    cursorObj.execute(sql)
+    seleccion = cursorObj.fetchall()
+    return seleccion
+
 
 
 if __name__ == '__main__':    
     app.run(debug=True, host='127.0.0.1', port =443)
     #, ssl_context=('micertificado.pem', 'llaveprivada.pem'))
+
+
