@@ -148,9 +148,20 @@ def deleteUser():
     db = get_db()
     db.execute(sql)
     db.commit()
+
+    sql = f'DELETE FROM Post WHERE UserId = {userId}'
+    db = get_db()
+    db.execute(sql)
+    db.commit()
+
+    sql = f'DELETE FROM Comments WHERE UserId = {userId}'
+    db = get_db()
+    db.execute(sql)
+    db.commit()
+
     db.close()
     flash('Usuario eliminado exitosamente')
-    return redirect( url_for('postdetail', codigo=userId) )
+    return redirect( url_for('search', codigo=userId) )
 
 @app.route('/postdetail')
 def postdetail():
