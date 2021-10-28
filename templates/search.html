@@ -89,6 +89,7 @@
                                         <p class="fs-mini text-muted">2,898 publicaciones</p><a class="btn btn-primary btn-info btn-sm" href="{{url_for('perfil', codigo = pfound[0]) }}">Ver perfil</a>
                                         {% if session['rol']== 1 %}
                                             <a class="btn btn-danger btn-info btn-sm" id="borrarusuario" href="{{url_for('deleteUser', userId = pfound[0] ) }}">Eliminar</a>
+                                            <!-- al eliminar no arroja el mensaje flash en el search que fue donde redirigi, lo manda en el feed o en la siguiten pagina que renderice -->
                                         {% endif %}
                                         </div>
                                     </div>
