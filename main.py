@@ -132,7 +132,7 @@ def deleteProduct():
 @app.route('/postdetail')
 def postdetail():
     idp = request.args.get('codigo')
-    sql = f'SELECT * FROM Post, User WHERE User.UserId=Post.UserId AND Post.PostId = {idp}'
+    sql = f'SELECT * FROM Post , User WHERE User.UserId=Post.UserId AND Post.PostId = {idp}'
     db = get_db()
     cursorObj = db.cursor()
     cursorObj.execute(sql)
@@ -183,7 +183,6 @@ def login():
 @app.route('/logout')
 def logout():
     if 'id' in session:
-        #session.pop('id')
         session.clear()
     return redirect(url_for('feed'))
 
@@ -213,9 +212,9 @@ def registro():
         if not isEmailValid(email):
             error = "El correo ingresado es inválido"
             flash(error)
-        #if not isPasswordValid(password):
-            #error = "La contraseña debe contener al menos una minúscula, una mayúscula, un número y 5 caracteres"
-            #flash(error)
+        if not isPasswordValid(newPass1):
+            error = "La contraseña debe contener al menos una minúscula, una mayúscula, un número y 5 caracteres"
+            flash(error)
         if error is not None:
             # Ocurrió un error
             print(error)
@@ -247,11 +246,15 @@ def changepass():
         if newPass1 != newPass2:    #si los dos campos de nueva contraseña no coinciden
             error1 = "Error al validar la nueva contraseña"
             flash(error1)
+        if not isPasswordValid(newPass1):
+            error1= "La contraseña debe contener al menos una minúscula, una mayúscula, un número y 5 caracteres"
+            flash(error1)
         else:
             newPassHash = generate_password_hash(newPass1)  #genera nueva contraseña encriptada
         if error1 is not None:
             print(error1)
             return render_template("cambiarcontrasena.html", form=form)
+
         else:
             db = get_db()
             sql1 = f'UPDATE User SET password = ? WHERE email = ?'
@@ -282,8 +285,13 @@ def search():
         cursorObj = db.cursor()
         cursorObj.execute(sql)       
         Sresult = cursorObj.fetchall()
-        if len(Sresult) > 0:
-            return render_template("search.html", Sresult=Sresult)                               
+
+        clave2 = request.form['palabra']
+        sql2 = f'SELECT * FROM Post WHERE title LIKE "%{clave}%"'
+        cursorObj.execute(sql2)       
+        posts = cursorObj.fetchall()
+        if len(Sresult) or len(posts) > 0:
+            return render_template("search.html", Sresult=Sresult, posts=posts)                               
         else:
             flash(f'La busqueda no arrojo resultados')
             return redirect(url_for('feed'))
@@ -304,7 +312,7 @@ def perfil():
    
 @app.route('/addcomm', methods=['GET','POST'])
 def addcomm():
-    postsel = request.args.get('codigo')
+    postsel = request.args.get('codigo') #recupera el valor de la variable codigo enviada por GET
     form = CommForm()
     if request.method == 'POST':
         
@@ -313,7 +321,7 @@ def addcomm():
         db.execute('INSERT INTO Comments (Content, PostId, UserId, CreationDate) VALUES(?,?,?,?)', (contenido,postsel,session['id'],datetime.now() ))
         db.commit()
         
-    return redirect(url_for('postdetail', codigo = postsel))
+    return redirect(url_for('postdetail', codigo=postsel))
 
 
 if __name__ == '__main__':    

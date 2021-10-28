@@ -95,6 +95,25 @@
                                 </div>
                             </section>        
                         {% endfor %} 
+                        
+                        {% for pub in posts %}
+                        {%if pub[4] != session['id']%}
+                            <div class="novedad">
+                                <h2 class="titulo">{% print(pub[2]) %}</h2>
+                                <p class="texto">{% print(pub[3]) %}</p>
+                                <a href="{{url_for('postdetail', codigo = pub[0]) }}">
+                                    <img src="static/images/post/{% print(pub[1]) %}"  alt="Card image cap">
+                                <div class="botones">
+                                    <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="comentario"><i class="fas fa-comment"></i> </a>
+                                    {% print(pub[4]) %}
+                                    <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="favoritos"><i class="fas fa-heart"></i> </a>
+                                    {% print(pub[4]) %}
+        
+                                    <button role="button" class="retweets"><i class="fas fa-retweet"></i> 100</button>
+                                </div>
+                            </div>
+                        {%endif%}
+                    {% endfor %}
               
                         <div class="text-align-center">
                             <ul class="pagination pagination-sm">
