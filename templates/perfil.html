@@ -40,10 +40,13 @@
             <button class="btn btn-outline-success bg-primary bg-dark" type="submit">Search</button>
         </form>
 
-        <div class="" id="">
+        <div class="contenedorInfoPerfil" id="">
             <!-- falta corrgir -->
-            <div class="">
+            <div class="infoPerfil">
                 {% if 'id' in session %}
+                <a  href="{{url_for('perfil', codigo = session['id']) }}">
+                    <img src="../static/images/perfil/{% print(psel[9]) %}" alt="">
+                </a>
                 <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
                 <!-- hay un bug en el logout realmente no cierra la sesion -->
                 <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Logout</a> </span>

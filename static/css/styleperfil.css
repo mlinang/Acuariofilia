@@ -18,6 +18,20 @@ body {
 .d-flex{
   width: 50%;
 }
+.navbar{
+  max-height: 55px;
+}
+  
+
+.infoPerfil a img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+
+}
+
+
+
 .profile-nav, .profile-info{
   margin-top:30px;   
 }

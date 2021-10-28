@@ -13,27 +13,29 @@
     </head>
     
 {% block body %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{'feed'}}">ACUARIOFILIA</a>
-            <div class="" id=""> <!-- falta corrgir -->
-                <div class="">
-                    {% if 'id' in session %}
-                        <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
-                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'logout'}}">Logout</a> </span>
-                    {% else %}
-                        <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
-                        <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
-                    {% endif %}       
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{'feed'}}">ACUARIOFILIA</a>
+                <form class="d-flex" form action="{{url_for('search')}}" method="post" enctype="multipart/form-data">
+                    <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search" hidden >
+                    <button class="btn btn-outline-success bg-primary bg-dark" type="submit" hidden>Search</button>
+                </form>
+                
+                <div class="" id=""> <!-- falta corrgir -->
+                    <div class="">
+                        {% if 'id' in session %}
+                            <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
+                            <!-- hay un bug en el logout realmente no cierra la sesion -->
+                            <span class="navbar-text p-2 bd-highlight"> <a href="{{'logout'}}">Logout</a> </span>
+                        {% else %}
+                            <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
+                            <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
+                        {% endif %}       
+                    </div>
                 </div>
             </div>
-            <form class="d-flex" form action="{{url_for('search')}}" method="post" enctype="multipart/form-data">
-                <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success bg-primary bg-dark" type="submit">Search</button>
-              </form>
-        </div>
-    </nav>
-    
+        </nav>
+      
         <div class="container">
             <br/>
             <div class="row justify-content-center">
