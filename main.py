@@ -64,8 +64,6 @@ def feed():
     else:
         return redirect('login')
     
-
-
 @app.route('/addPost', methods=['GET', 'POST'])
 def addPost():
     form = Postform()
@@ -81,53 +79,6 @@ def addPost():
         mensajeExitoso ="Registro exitoso"
         return redirect(url_for('feed', mensajeExitoso=mensajeExitoso))
     return render_template('addPost.html', form=form)
-
-@app.route('/editProduct', methods=['GET', 'POST'])
-def editProduct():
-    id = request.args.get('id')
-    if request.method == 'GET':
-        form = Postform()
-        db = get_db()
-        sql = f'SELECT * FROM Post WHERE id = {id}'
-        cursorObj = db.cursor()
-        cursorObj.execute(sql)
-        products = cursorObj.fetchall()[0]
-        return render_template('editProduct.html', form=form, products=products)
-    
-    if request.method == 'POST':
-        id = request.form['id']
-        nombre = request.form['nombre']
-        descripcion = request.form['descripcion']
-        precio = request.form['precio']
-        cantidad = request.form['cantidad']
-        estado = request.form['estado']
-        imagen = request.files['imagen']
-        if imagen.filename != "":
-            filename = secure_filename(imagen.filename)
-            imagen.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))     
-        else:
-            filename = request.form['filename']        
-        db = get_db()
-        sql = 'UPDATE products SET nombre = ?, descripcion = ?, precio = ?, cantidad = ?, url = ?, estado = ? WHERE id = ?'        
-        result = db.execute(sql, (nombre, descripcion, precio, cantidad, filename, estado, id)).rowcount
-        db.commit()
-        if result > 0:
-            flash('Se actualizó el registro exitosamente')
-        else:
-            flash('No se pudo actualizar el registro')            
-        return redirect(url_for('product'))
-        
-
-@app.route('/deleteProduct', methods=['GET', 'POST'])
-def deleteProduct():
-    id = request.args.get('id')
-    sql = "DELETE FROM products WHERE id = ?"
-    db = get_db()
-    db.execute(sql, (id))
-    db.commit()
-    db.close()
-    flash('Registro eliminado exitosamente')
-    return redirect(url_for('product'))
 
 @app.route('/postdetail')
 def postdetail():
