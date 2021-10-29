@@ -51,6 +51,12 @@
             document.getElementById('btnGuardar').disabled = true
             document.getElementById('btnGuardar').hidden = true
         }
+        function openForm() {
+            document.getElementById("myForm").hidden = false;
+        }
+        function closeForm() {
+            document.getElementById("myForm").hidden = true;
+        }
     </script>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
@@ -92,26 +98,34 @@
                             <h2>{%print(psel[12])%}</h2>
                         </div>
                         <div class="menu">
+
                             <ul class="nav nav-pills nav-stacked">
                                 <li class="active"><a href="{{'feed'}}"> <i class="fas fa-home"></i>Inicio</a></li>
                                 {% if session['id']==psel[0] %}
-                                    <input type="button" value="editar perfil" onclick="habilitarCampos()">
+                                    <li><a href=""></a> <i class="fa fa-pencil" aria-hidden="true"></i><input type="button" class ="btnhabilitar" value="Editar Perfil" onclick="habilitarCampos()"></li>
+                                    
                                 {% endif %}
                                 {% if session['rol']==1 %}
                                     <li><a href="{{url_for('makeAdmin', userId = psel[0] ) }}"> <i class="fa fa-edit"></i> Ascender a administrador</a></li>
                                 {% endif %}
                                 {% if session['rol']==1 %}
                                     <li><a href="{{url_for('deleteUser', userId = psel[0] ) }}"> <i class="fa fa-user-times"></i> Borrar Perfil</a></li>
-                                    <div class="chat-popup" id="myForm" hidden>
-                                        <form class="form-container" form action="{{url_for('sendmes', codigo = psel[0])}}" method="post"
-                                            enctype="multipart/form-data">
-                                            <textarea placeholder="Type message.." name="msg" required></textarea>
-                                            <button type="submit" class="btn" onclick="closeForm()">Send </button>
-                                            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-                                        </form>
-                                    </div>
                                 {% endif %}
+                                <li><a onclick="openForm()"> <i class="fa fa-envelope"></i>Send Message</a></li>
+                                {% if session['id']!=psel[0] %}
+                                    
+                                
+                                {% endif %}
+                                
                             </ul>
+                            <div class="chat-popup" id="myForm" >
+                                <form class="form-container" form action="{{url_for('sendmes', codigo = psel[0])}}" method="post"
+                                    enctype="multipart/form-data">
+                                    <textarea placeholder="Type message.." name="msg" required></textarea>
+                                    <button type="submit" class="btn" onclick="closeForm()">Send </button>
+                                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -121,7 +135,6 @@
                     <div class="panel">
                         <h1>Informacion personal</h1> 
                         <div class="row">
-                            {%if session['id']==psel[0]%}
                                 <div class="bio-row">
                                     <label for="nombre">Nombre </label>
                                     <input type="text" name="nombre" id="nombre" value="{%print(psel[1])%}" disabled>
@@ -152,7 +165,6 @@
                                 </div>
 
                                 <input type="submit" value="Guardar Cambios" id="btnGuardar" disabled hidden>
-                            {%endif%}
                         </div> 
 
                         <div class="panel-body bio-graph-info">
