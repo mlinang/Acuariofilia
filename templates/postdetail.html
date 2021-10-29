@@ -52,49 +52,54 @@
                 function delete_flash(flash) {
                     $(flash).parent().remove()
                 }
+                function habcomet() {
+                   
+                }
             </script>
 
         {% endblock %}
-        
-        <div class="container  bootstrap snippets bootdey">
-            <div class="contenedorImagen">
-                <img src="../static/images/post/{% print(postsel[0][1]) %}" class="img-fluid" alt=" image">
-            </div>
-            <hr>
-            {% if session['id']==postsel[0][4] or session['rol']== 1 %}
-                <a button type="submit" id=btdel href="{{url_for('deletePost', codigo = postsel[0][0]) }}">Eliminar publicación<i class="trash-alt btn-sm mb-5"></i></a> <!--error debido a usuario eliminado -->
-            {% endif %} 
+        <div class="container bootstrap snippets bootdey">
+            <div class="col-md-8">
+              <div class="box box-widget">
+                <div class="box-header with-border">
+                  <div class="user-block">
+                    <a href="{{url_for('perfil', codigo = session['id']) }}"><img class="fotoperfil-md-left" src="../static/images/perfil/{% print(postsel[0][15]) %}" alt="User Image">
+                    <span class="username"><a href="{{url_for('perfil', codigo = postsel[0][4]) }}">{% print(postsel[0][7]+ " " +postsel[0][8]) %}.</a></span>
+                    <span class="description">Publicacion compartida el {% print(postsel[0][3]) %}</span>
+                  </div>
+                </div>
+                <div class="box-body" style="display: block;">
+                    <img src="../static/images/post/{% print(postsel[0][1]) %}" class="img-fluid" alt="Responsive image">
+                    <p>{% print(postsel[0][2]) %}</p>
+                    <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+                    <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+                    <span class="pull-right text-muted">127 likes - 3 comments</span>
+                    {% if session['id']==postsel[0][4] or session['rol']== 1 %}
+                        <a button type="submit" id=btdel href="{{url_for('deletePost', codigo = postsel[0][0]) }}">Eliminar publicación<i class="trash-alt btn-sm mb-5"></i></a> <!--error debido a usuario eliminado -->
+                    {% endif %} 
+                </div>
+            
             <div class="post-content ">
                 <div class="post-container">
-                    <a href="{{url_for('perfil', codigo = session['id']) }}"><img src="../static/images/perfil/{% print(postsel[0][15]) %}" alt="user" class="fotoperfil-md-left"></a>
-                    <a role="enlace" href="#" class="favoritos"><i class="fas fa-heart"></i> </a>
+                    
                     <div class="post-detail">
-                        <div class="user-info">
-                            <p class="text-muted">Publicada {% print(postsel[0][3]) %}</p>
-                        </div>
-                        <div class="post-text">
-                            <p>{% print(postsel[0][2]) %}  </p>
-                        </div>
+                        
                     {% for com in comPost %}
+                    <div class="box-comment">
                         <div class="post-comment" id="{{ com[0] }}">
                             <a href="{{url_for('perfil', codigo = com[3]) }}" class="profile-link"><img src="../static/images/perfil/{% print(com[14]) %}" alt="" class="profile-photo-sm"></a>
-                            <p><a href="{{url_for('perfil', codigo = com[3]) }}" class="profile-link">{% print(com[6]) %} {% print(com[7]) %}</a> {% print(com[1]) %} </p>
+                            <p><a href="{{url_for('perfil', codigo = com[3]) }}" class="profile-link">{% print(com[6]) %} {% print(com[7]) %} <br></a> 
+                                <input type="text" class="nosec" value="{% print(com[1]) %}" disabled>    </p>
                             {% if session['id']==com[5] or session['rol']== 1 %}
-                                <a button type="submit" id=btdel href="{{url_for('deleteComm', codigo = com[0], postId=com[2]) }}"> Borrrar<i class="trash-alt btn-sm mb-5"></i></a>
-                    
+                                <a href="{{url_for('deleteComm', codigo = com[0], postId=com[2]) }}"><br> <ul> Borrrar<i class="far fa-trash mb-1"></i></a></ul>
                             {% endif %} 
                         </div>
+                    </div>
                     {% endfor %}
                         <div class="post-comment">
                             <img src="../static/images/perfil/{% print(session['foto']) %}" alt="" class="profile-photo-sm">
                             <form class="flex" form action="{{url_for('addcomm', codigo = postsel[0][0])}}" method="post" enctype="multipart/form-data">
-                                <input class="form-control form-control-user" name="postselect" id="postselect" value=postsel[0][0] hidden>        
-                                <textarea class="form-control form-control-user" name="comentario" id="comentario" placeholder="Comentar algo"></textarea>
-                                <div class="enviar">
-                                    <label for="btnEnviar" class="far fa-paper-plane">  </label>
-                                    <button type="submit" class="btnEnviar" id="btnEnviar">Enviar</button>
-                                </div>
-                                
+                                    <input type= "text" name="comentario" id="comentario" placeholder="Comentar algo"></textarea>
                             </form>
                         </div>
                     </div>
