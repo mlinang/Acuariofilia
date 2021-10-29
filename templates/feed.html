@@ -17,7 +17,6 @@
                 {% for mensaje in mensajes %}
                         {{mensaje}}
                 {% endfor %}                                      
-            <button onclick="delete_flash(this)" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>      
         {% endif %}
     {% endwith %}
@@ -96,9 +95,8 @@
                 {% if 'id' in session %}
                     <li class="fa fa-user" > <a href="{{url_for('perfil', codigo = session['id']) }}">Mi perfil</a></li>
                     <li class="fas fa-binoculars"> <a  href="{{'search'}}">Explora</a></li>
-                    <li class="far fa-envelope"> Mensajes</li> 
+                    <li class="far fa-envelope"> Mensajes</li>
                     <li class="fas fa-cogs"> <a href="{{'dashboard'}}"> Administra </a></li> 
-                    <li class="fas fa-cogs"> <a href="{{'cambiarcontrasena'}}"> Cambiar contraseña </a></li>
                 {% else %}
                     <!-- ESTE ELSE SIRVE PARA CARGAR OPCIONES DE ADMINS Y SUP ADMINS
                         
