@@ -74,6 +74,10 @@ body {
   border-left: 5px solid #fbc02d;
   color: #89817f !important;
 }
+.table-responsive tbody .name{
+  text-align: left;
+  background: #fbc02d;
+}
 
 .profile-nav ul > li > a > i{
   font-size: 20px;
