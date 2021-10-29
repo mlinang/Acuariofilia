@@ -80,7 +80,7 @@
                             <a href="{{url_for('perfil', codigo = com[3]) }}" class="profile-link"><img src="../static/images/perfil/{% print(com[14]) %}" alt="" class="profile-photo-sm"></a>
                             <p><a href="{{url_for('perfil', codigo = com[3]) }}" class="profile-link">{% print(com[6]) %} {% print(com[7]) %}</a> {% print(com[1]) %} </p>
                             {% if session['id']==com[5] or session['rol']== 1 %}
-                                <a button type="submit" id=btdel href="{{url_for('deleteComm', codigo = com[0], postId=com[2]) }}">Borrrar<i class="trash-alt btn-sm mb-5"></i></a>
+                                <a button type="submit" id=btdel href="{{url_for('deleteComm', codigo = com[0], postId=com[2]) }}"> Borrrar<i class="trash-alt btn-sm mb-5"></i></a>
                     
                             {% endif %} 
                         </div>

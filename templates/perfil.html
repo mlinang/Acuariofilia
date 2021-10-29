@@ -22,8 +22,6 @@
     {% for mensaje in mensajes %}
     {{mensaje}}
     {% endfor %}
-    <button onclick="delete_flash(this)" type="button" class="btn-close" data-bs-dismiss="alert"
-        aria-label="Close"></button>
 </div>
 {% endif %}
 {% endwith %}
@@ -39,7 +37,6 @@
         document.getElementById('profesion').disabled = false
         document.getElementById('email').disabled = false
         document.getElementById('telefono').disabled = false
-        document.getElementById('btnGuardar').disabled = false
         document.getElementById('btnGuardar').hidden = false
     }
     function inhabilitarCampos(){
@@ -50,7 +47,6 @@
         document.getElementById('profesion').disabled = true
         document.getElementById('email').disabled = true
         document.getElementById('telefono').disabled = true
-        document.getElementById('btnGuardar').disabled = true
         document.getElementById('btnGuardar').hidden = true
     }
 </script>
@@ -81,7 +77,6 @@
     </div>
 </nav>
 <div class="container bootstrap snippets bootdey">
-    <form class="datosPersonales" form action="" method="post" enctype="multipart/form-data">
         <div class="row">
             <div class="profile-nav col-md-3">
                 <div class="panel">
@@ -97,6 +92,7 @@
                             <li class="active"><a href="{{'feed'}}"> <i class="fas fa-home"></i>Inicio</a></li>
                             {% if session['id']==psel[0] %}
                                 <input type="button" value="editar perfil" onclick="habilitarCampos()">
+                                <li class="fas fa-cogs"> <a href="{{'cambiarcontrasena'}}"> Cambiar contraseña </a></li>
                             {% endif %}
                             {% if session['rol']==1 %}
                                 <li><a href="{{url_for('makeAdmin', userId = psel[0] ) }}"> <i class="fa fa-edit"></i> Ascender a administrador</a></li>
@@ -119,73 +115,37 @@
                     <div class="panel-body bio-graph-info">
                         <h1>Informacion Personal</h1> <br><br>
                         <div class="row">
-                            <form>
-                                {%if session['id']==psel[0]%}
-                                    <div class="bio-row">
-                                        <label for="nombre">Nombre </label>
-                                        <input type="text" name="nombre" id="nombre" value="{%print(psel[1])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="apellido">Apellido </label>
-                                        <input type="text" name="apellido" id="apellido" value="{%print(psel[2])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="pais">Pais </label>
-                                        <input type="text" name="pais" id="pais" value="{%print(psel[10])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="nacimiento">Fecha Nacimiento</label>
-                                        <input type="text" name="nacimiento" id="nacimiento" value="{%print(psel[5])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="profesion">Profesion</label>
-                                        <input type="text" name="profesion" id="profesion" value="UI Designer" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="email">Email</label>
-                                        <input type="text" name="email" id="email" value="{%print(psel[3])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="telefono">Telefono</label>
-                                        <input type="text" name="telefono" id="telefono" value="{%print(psel[11])%}" disabled>
-                                    </div>
+                            <form action="{{ url_for('editProfile') }}" method="post" enctype="multipart/form-data" >
+                                <div class="bio-row">
+                                    <label for="nombre">Nombre </label>
+                                    <input type="text" name="nombre" id="nombre" value="{%print(psel[1])%}" disabled>
+                                </div>
+                                <div class="bio-row">
+                                    <label for="apellido">Apellido </label>
+                                    <input type="text" name="apellido" id="apellido" value="{%print(psel[2])%}" disabled>
+                                </div>
+                                <div class="bio-row">
+                                    <label for="pais">Pais </label>
+                                    <input type="text" name="pais" id="pais" value="{%print(psel[10])%}" disabled>
+                                </div>
+                                <div class="bio-row">
+                                    <label for="nacimiento">Fecha Nacimiento</label>
+                                    <input type="text" name="nacimiento" id="nacimiento" value="{%print(psel[5])%}" disabled>
+                                </div>
+                                <div class="bio-row">
+                                    <label for="profesion">Profesion</label>
+                                    <input type="text" name="profesion" id="profesion" value="UI Designer" disabled>
+                                </div>
+                                <div class="bio-row">
+                                    <label for="email">Email</label>
+                                    <input type="text" name="email" id="email" value="{%print(psel[3])%}" disabled>
+                                </div>
+                                <div class="bio-row">
+                                    <label for="telefono">Telefono</label>
+                                    <input type="text" name="telefono" id="telefono" value="{%print(psel[11])%}" disabled>
+                                </div>
 
-                                    <div class="">
-                                        <input type="button" value="Guardar Cambios" id="btnGuardar" onclick="inhabilitarCampos()" hidden disabled >
-                                    </div>
-                                    
-
-                                    
-                                {%else%}
-                                    <div class="bio-row">
-                                        <label for="nombre">Nombre </label>
-                                        <input type="text" name="nombre" id="nombre" value="{%print(psel[1])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="apellido">Apellido </label>
-                                        <input type="text" name="apellido" id="apellido" value="{%print(psel[2])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="pais">Pais </label>
-                                        <input type="text" name="pais" id="pais" value="{%print(psel[10])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="nacimiento">Fecha Nacimiento</label>
-                                        <input type="text" name="nacimiento" id="nacimiento" value="{%print(psel[5])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="profesion">Profesion</label>
-                                        <input type="text" name="profesion" id="profesion" value="UI Designer" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="email">Email</label>
-                                        <input type="text" name="email" id="email" value="{%print(psel[3])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="telefono">Telefono</label>
-                                        <input type="text" name="telefono" id="telefono" value="{%print(psel[11])%}" disabled>
-                                    </div>
-                                {%endif%}
+                                <input type="submit" value="Guardar Cambios" id="btnGuardar" >
 
                             </form>
                         </div>
@@ -193,7 +153,6 @@
                 </div>
             </div>
         </div>
-    </form>
 </div>
 {% endblock %}
 
