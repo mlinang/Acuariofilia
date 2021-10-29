@@ -251,7 +251,7 @@ def restablecercontrasena():
 
 @app.route('/editProfile', methods=['POST']) #ojo... debe haber siempre una sesion activa
 def editProfile():
-    error = "ahí entró"
+    error = "Sus Datos han sido Actualizados Correctamente."
     flash(error)
     if 'id' in session:
         nombre = request.form['nombre']

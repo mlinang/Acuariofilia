@@ -138,42 +138,42 @@
                 <div class="profile-info col-md-9">
 
                     <div class="panel">
-                        <form class="datosPersonales" form action="{{ url_for('editProfile') }}" method="post" enctype="multipart/form-data"></form>
-                        <h1>Informacion personal</h1> 
-                        <div class="row">
-                                <div class="bio-row">
-                                    <label for="nombre">Nombre </label>
-                                    <input type="text" name="nombre" id="nombre" value="{%print(psel[1])%}" disabled>
-                                </div>
-                                <div class="bio-row">
-                                    <label for="apellido">Apellido </label>
-                                    <input type="text" name="apellido" id="apellido" value="{%print(psel[2])%}" disabled>
-                                </div>
-                                <div class="bio-row">
-                                    <label for="pais">Pais </label>
-                                    <input type="text" name="pais" id="pais" value="{%print(psel[10])%}" disabled>
-                                </div>
-                                <div class="bio-row">
-                                    <label for="nacimiento">Fecha Nacimiento</label>
-                                    <input type="text" name="nacimiento" id="nacimiento" value="{%print(psel[5])%}" disabled>
-                                </div>
-                                <div class="bio-row">
-                                    <label for="profesion">Profesion</label>
-                                    <input type="text" name="profesion" id="profesion" value="UI Designer" disabled>
-                                </div>
-                                <div class="bio-row">
-                                    <label for="email">Email</label>
-                                    <input type="text" name="email" id="email" value="{%print(psel[3])%}" disabled>
-                                </div>
-                                <div class="bio-row">
-                                    <label for="telefono">Telefono</label>
-                                    <input type="text" name="telefono" id="telefono" value="{%print(psel[11])%}" disabled>
-                                </div>
-                                <div class="bio-row">
-                                    <input type="submit" value="Guardar Cambios" id="btnGuardar" disabled hidden>
-                                </div>
-                                
-                            </div> 
+                        <form class="datosPersonales" form action="{{ url_for('editProfile') }}" method="post" enctype="multipart/form-data">
+                            <h1>Informacion personal</h1> 
+                            <div class="row">
+                                    <div class="bio-row">
+                                        <label for="nombre">Nombre </label>
+                                        <input type="text" name="nombre" id="nombre" value="{%print(psel[1])%}" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="apellido">Apellido </label>
+                                        <input type="text" name="apellido" id="apellido" value="{%print(psel[2])%}" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="pais">Pais </label>
+                                        <input type="text" name="pais" id="pais" value="{%print(psel[10])%}" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="nacimiento">Fecha Nacimiento</label>
+                                        <input type="text" name="nacimiento" id="nacimiento" value="{%print(psel[5])%}" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="profesion">Profesion</label>
+                                        <input type="text" name="profesion" id="profesion" value="UI Designer" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="email">Email</label>
+                                        <input type="text" name="email" id="email" value="{%print(psel[3])%}" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <label for="telefono">Telefono</label>
+                                        <input type="text" name="telefono" id="telefono" value="{%print(psel[11])%}" disabled>
+                                    </div>
+                                    <div class="bio-row">
+                                        <input type="submit" value="Guardar Cambios" id="btnGuardar"disabled hidden >
+                                    </div>
+                                    
+                                </div> 
                         </form>
                         {% if session['id']==psel[0] %}
                             <div class="panel-body bio-graph-info">
