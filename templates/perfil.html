@@ -22,14 +22,40 @@
     {% for mensaje in mensajes %}
     {{mensaje}}
     {% endfor %}
-    <button onclick="delete_flash(this)" type="button" class="btn-close" data-bs-dismiss="alert"
-        aria-label="Close"></button>
 </div>
 {% endif %}
 {% endwith %}
 <script>
     function delete_flash(flash) {
         $(flash).parent().remove()
+    }
+    function habilitarCampos() {
+        document.getElementById('nombre').disabled = false
+        document.getElementById('apellido').disabled = false
+        document.getElementById('pais').disabled = false
+        document.getElementById('nacimiento').disabled = false
+        document.getElementById('profesion').disabled = false
+        document.getElementById('email').disabled = false
+        document.getElementById('telefono').disabled = false
+        document.getElementById('btnGuardar').disabled = false
+        document.getElementById('btnGuardar').hidden = false
+    }
+    function inhabilitarCampos() {
+        document.getElementById('nombre').disabled = true
+        document.getElementById('apellido').disabled = true
+        document.getElementById('pais').disabled = true
+        document.getElementById('nacimiento').disabled = true
+        document.getElementById('profesion').disabled = true
+        document.getElementById('email').disabled = true
+        document.getElementById('telefono').disabled = true
+        document.getElementById('btnGuardar').disabled = true
+        document.getElementById('btnGuardar').hidden = true
+    }
+    function openForm() {
+        document.getElementById("myForm").hidden = false;
+    }
+    function closeForm() {
+        document.getElementById("myForm").hidden = true;
     }
 </script>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -44,7 +70,7 @@
             <!-- falta corrgir -->
             <div class="infoPerfil">
                 {% if 'id' in session %}
-                <a  href="{{url_for('perfil', codigo = session['id']) }}">
+                <a href="{{url_for('perfil', codigo = session['id']) }}">
                     <img src="../static/images/perfil/{% print(psel[9]) %}" alt="">
                 </a>
                 <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
@@ -59,7 +85,8 @@
     </div>
 </nav>
 <div class="container bootstrap snippets bootdey">
-    <form class="datosPersonales" form action="" method="post" enctype="multipart/form-data">
+    <form class="datosPersonales" form action="{{ url_for('editProfile') }}" method="post"
+        enctype="multipart/form-data">
         <div class="row">
             <div class="profile-nav col-md-3">
                 <div class="panel">
@@ -69,102 +96,117 @@
                         </a>
                         <h1>{%print(psel[1]+" "+ psel[2])%}</h1>
                         <p>{%print(psel[3])%}</p>
+                        <h2>{%print(psel[12])%}</h2>
                     </div>
                     <div class="menu">
+
                         <ul class="nav nav-pills nav-stacked">
                             <li class="active"><a href="{{'feed'}}"> <i class="fas fa-home"></i>Inicio</a></li>
                             {% if session['id']==psel[0] %}
-                                <li><a href="#"> <i class="fa fa-edit"></i> Edit profile</a></li>
+                            <li><a href=""></a> <i class="fa fa-pencil" aria-hidden="true"></i><input type="button"
+                                    class="btnhabilitar" value="Editar Perfil" onclick="habilitarCampos()"></li>
+
                             {% endif %}
                             {% if session['rol']==1 %}
-                                <li><a href="{{url_for('makeAdmin', userId = psel[0] ) }}"> <i class="fa fa-edit"></i> Ascender a administrador</a></li>
+                            <li><a href="{{url_for('makeAdmin', userId = psel[0] ) }}"> <i class="fa fa-edit"></i>
+                                    Ascender a administrador</a></li>
                             {% endif %}
                             {% if session['rol']==1 %}
-                                <li><a href="{{url_for('deleteUser', userId = psel[0] ) }}"> <i class="fa fa-user-times"></i> Borrar Perfil</a></li>
+                            <li><a href="{{url_for('deleteUser', userId = psel[0] ) }}"> <i
+                                        class="fa fa-user-times"></i> Borrar Perfil</a></li>
                             {% endif %}
+                            {% if session['id']!=psel[0] %}
+                                <li><a onclick="openForm()"> <i class="fa fa-envelope"></i>Send Message</a></li>
+                            {% endif %}
+
                         </ul>
+                        <div class="chat-popup" id="myForm">
+                            <form class="form-container" form action="{{url_for('sendmes', codigo = psel[0])}}"
+                                method="post" enctype="multipart/form-data">
+                                <textarea placeholder="Type message.." name="msg" required></textarea>
+                                <button type="submit" class="btn" onclick="closeForm()">Send </button>
+                                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="profile-info col-md-9">
 
-                <div class="panel">
-                    <h1>Acerca de Mi</h1> <br>
-                    <div class="bio-graph-heading">
-                        {%print(psel[12])%}
-                    </div>
-                    <div class="panel-body bio-graph-info">
-                        <h1>Informacion Personal</h1> <br><br>
-                        <div class="row">
-                            <form>
-                                {%if session['id']==psel[0]%}
-                                    <div class="bio-row">
-                                        <label for="nombre">Nombre </label>
-                                        <input type="text" name="nombre" id="nombre" value="{%print(psel[1])%}" >
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="apellido">Apellido </label>
-                                        <input type="text" name="apellido" id="apellido" value="{%print(psel[2])%}" >
-                                     </div>
-                                    <div class="bio-row">
-                                        <label for="pais">Pais </label>
-                                        <input type="text" name="pais" id="pais" value="{%print(psel[10])%}" >
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="nacimiento">Fecha Nacimiento</label>
-                                        <input type="text" name="nacimiento" id="nacimiento" value="{%print(psel[5])%}" >
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="profesion">Profesion</label>
-                                        <input type="text" name="profesion" id="profesion" value="UI Designer" >
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="email">Email</label>
-                                        <input type="text" name="email" id="email" value="{%print(psel[3])%}" >
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="telefono">Telefono</label>
-                                        <input type="text" name="telefono" id="telefono" value="{%print(psel[11])%}" >
-                                    </div>
-                                {%else%}
-                                    <div class="bio-row">
-                                        <label for="nombre">Nombre </label>
-                                        <input type="text" name="nombre" id="nombre" value="{%print(psel[1])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="apellido">Apellido </label>
-                                        <input type="text" name="apellido" id="apellido" value="{%print(psel[2])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="pais">Pais </label>
-                                        <input type="text" name="pais" id="pais" value="{%print(psel[10])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="nacimiento">Fecha Nacimiento</label>
-                                        <input type="text" name="nacimiento" id="nacimiento" value="{%print(psel[5])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="profesion">Profesion</label>
-                                        <input type="text" name="profesion" id="profesion" value="UI Designer" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="email">Email</label>
-                                        <input type="text" name="email" id="email" value="{%print(psel[3])%}" disabled>
-                                    </div>
-                                    <div class="bio-row">
-                                        <label for="telefono">Telefono</label>
-                                        <input type="text" name="telefono" id="telefono" value="{%print(psel[11])%}" disabled>
-                                    </div>
-                                {%endif%}
+                <div class="panel">  
+                <form form action="{{url_for('editProfile')}}" method="post" enctype="multipart/form-data"></form>
+                    <h1>Informacion personal</h1>
+                    <div class="row">
+                      
+                            <div class="bio-row">
+                                <label for="nombre">Nombre </label>
+                                <input type="text" name="nombre" id="nombre" value="{%print(psel[1])%}" disabled>
+                            </div>
+                            <div class="bio-row">
+                                <label for="apellido">Apellido </label>
+                                <input type="text" name="apellido" id="apellido" value="{%print(psel[2])%}" disabled>
+                            </div>
+                            <div class="bio-row">
+                                <label for="pais">Pais </label>
+                                <input type="text" name="pais" id="pais" value="{%print(psel[10])%}" disabled>
+                            </div>
+                            <div class="bio-row">
+                                <label for="nacimiento">Fecha Nacimiento</label>
+                                <input type="text" name="nacimiento" id="nacimiento" value="{%print(psel[5])%}"
+                                    disabled>
+                            </div>
+                            <div class="bio-row">
+                                <label for="profesion">Profesion</label>
+                                <input type="text" name="profesion" id="profesion" value="UI Designer" disabled>
+                            </div>
+                            <div class="bio-row">
+                                <label for="email">Email</label>
+                                <input type="text" name="email" id="email" value="{%print(psel[3])%}" disabled>
+                            </div>
+                            <div class="bio-row">
+                                <label for="telefono">Telefono</label>
+                                <input type="text" name="telefono" id="telefono" value="{%print(psel[11])%}" disabled>
+                            </div>
 
-                            </form>
-                        </div>
+                            <input type="submit" value="Guardar Cambios" id="btnGuardar" disabled hidden>
+                        
                     </div>
+                </form>
+                    
+                {% if session['id']==psel[0] %}
+                    <div class="panel-body bio-graph-info">
+                        <h1>Mensajes</h1>
+                        {% if msgs == 'vacio' %}
+                            Tu bandeja esta vacia.
+                        {% else%}
+                            {% for msg in msgs %}
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="action"><input type="checkbox" /></td>
+                                                <td class="action"><i class="fa fa-star-o"></i></td>
+                                                <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                                                <td class="name"><a
+                                                        href="{{url_for('perfil', codigo = msg[3]) }}">{%print(msg[1])%}</a>
+                                                </td>
+                                                <td class="subject">{%print(psel[1])%}</td>
+                                                <td class="time">08:30 PM</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {%endif%}
                 </div>
             </div>
         </div>
     </form>
+
 </div>
 {% endblock %}
 
