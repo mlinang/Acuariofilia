@@ -163,19 +163,40 @@
                                     <label for="telefono">Telefono</label>
                                     <input type="text" name="telefono" id="telefono" value="{%print(psel[11])%}" disabled>
                                 </div>
-
                                 <input type="submit" value="Guardar Cambios" id="btnGuardar" disabled hidden>
-                        </div> 
-                    </form >
-                        <div class="panel-body bio-graph-info">
-                            <h1>Mensajes</h1>
-                            
-                        </div>
-                    
+                            </div> 
+                        </form>
+                        {% if session['id']==psel[0] %}
+                            <div class="panel-body bio-graph-info">
+                                <h1>Mensajes</h1>
+                                {% if msgs == 'vacio' %}
+                                    <h4>Tu bandeja esta vacia.</h4>
+                                {% else%}
+                                    {% for msg in msgs %}
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="action"><input type="checkbox" /></td>
+                                                        <td class="action"><i class="fa fa-star-o"></i></td>
+                                                        <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                                                        <td class="name"><a
+                                                                href="{{url_for('perfil', codigo = msg[3]) }}">{%print(msg[1])%}</a>
+                                                        </td>
+                                                        <td class="subject">{%print(psel[1])%}</td>
+                                                        <td class="time">08:30 PM</td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                        {%endif%}
+                            </div>
                     </div>
                 </div>
             </div>
-        
     </div>
 {% endblock %}
 </html>

@@ -308,8 +308,13 @@ def perfil():
             idsel = request.args.get('codigo')
             sql = f'SELECT * FROM User WHERE UserId = {idsel}'
             psel = selectSQLite(sql)
-            return render_template("perfil.html", psel=psel[0])
-   
+            sql = f'SELECT * FROM Messages WHERE UserPara = {idsel} order by CreationDate desc limit 20'
+            msgs = selectSQLite(sql)
+            if len(msgs)==0:
+                msgs="vacio"           
+      
+            return render_template("perfil.html", psel=psel[0], msgs=msgs)
+
 @app.route('/addcomm', methods=['GET','POST'])
 def addcomm():
     if 'fullname' not in session:
