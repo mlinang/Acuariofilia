@@ -189,10 +189,10 @@
                                                         <td class="action"><input type="checkbox" /></td>
                                                         
                                                         <td class="name">
-                                                            {%print(msg[1])%}
+                                                            {%print(msg[15])%}
                                                         </td>
-                                                        <td class="subject"><a href="{{url_for('perfil', codigo = msg[3]) }}">{%print(psel[1])%}</a></td>
-                                                        <td class="time">08:30 PM</td>
+                                                        <td class="subject"><a href="{{url_for('perfil', codigo = msg[3]) }}">{%print(msg[1]+" "+msg[2])%}</a></td>
+                                                        <td class="time">{%print(msg[18])%}</td>
                                                     </tr>
 
                                                 </tbody>
