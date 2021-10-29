@@ -113,11 +113,25 @@ body {
   font-size: 30px;
   
 }
+.panel  h2{
+  padding: 0;
+  text-align: center;
+  font-size: 13px;
+  font-style: italic;
+  
+}
+.panel .row{
+  font-size: 14px;
+}
+.panel .row input{
+  width: 200px;
+}
 
-/* aquiiiiiiiiiiiii */
+
+
 .panel-body {
   margin-top: 30px;
-  
+
 }
 
 .bio-row {
@@ -128,7 +142,7 @@ body {
   width: 50%;
   /* float: left; */
   margin-bottom: 10px;
-  padding:0 15px;
+  padding:0 15px 0 15px;
 }
 .bio-row input{
   background: none;

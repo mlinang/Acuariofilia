@@ -324,6 +324,20 @@ def addcomm():
             updateSQLite(sql, "cerrar")
         return redirect(url_for('postdetail', codigo=postsel))
 
+@app.route('/sendmes', methods=['GET', 'POST'])
+def sendmes():
+    if request.method == 'POST':
+        psel = request.args.get('codigo')
+        contenido = request.form['msg']
+        de=session['id']
+        time= datetime.now()
+        sql=(f"INSERT INTO Messages (Content, UserPara, UserDe, CreationDate) VALUES('{contenido}',{psel},{de},'{time}')")
+        db = get_db()
+        result=db.execute(sql)
+        db.commit()
+        
+    return redirect(url_for('perfil', codigo=psel))
+
 
 def updateSQLite(sql, accion): #accion es para indicar que se puede cerrar la instancia de la base de datos.
     db = get_db()
