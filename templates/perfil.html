@@ -52,7 +52,12 @@
             document.getElementById('btnGuardar').hidden = true
         }
         function openForm() {
-            document.getElementById("myForm").hidden = false;
+            let status= document.getElementById("myForm").hidden;
+            if (status==false)
+                document.getElementById("myForm").hidden= true;
+            else 
+                document.getElementById("myForm").hidden= false
+
         }
         function closeForm() {
             document.getElementById("myForm").hidden = true;
@@ -101,7 +106,8 @@
                             <ul class="nav nav-pills nav-stacked">
                                 <li class="active"><a href="{{'feed'}}"> <i class="fas fa-home"></i>Inicio</a></li>
                                 {% if session['id']==psel[0] %}
-                                    <li><a href=""></a> <i class="fa fa-pencil" aria-hidden="true"></i><input type="button" class ="btnhabilitar" value="Editar Perfil" onclick="habilitarCampos()"></li>
+                                  
+                                    <li><a onclick="habilitarCampos()"><i class="fa fa-pencil" ></i>Editar Perfil</a></li>
                                     
                                 {% endif %}
                                 {% if session['rol']==1 %}
@@ -117,10 +123,10 @@
                                 {% endif %}
                                 
                             </ul>
-                            <div class="chat-popup" id="myForm" >
+                            <div class="chat-popup" id="myForm"  hidden>
                                 <form class="form-container" form action="{{url_for('sendmes', codigo = psel[0])}}" method="post"
                                     enctype="multipart/form-data">
-                                    <textarea placeholder="Type message.." name="msg" required></textarea>
+                                    <textarea placeholder="Type message.." name="msg" required class="mensaje"></textarea>
                                     <button type="submit" class="btn" onclick="closeForm()">Send </button>
                                     <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
                                 </form>
@@ -163,7 +169,10 @@
                                     <label for="telefono">Telefono</label>
                                     <input type="text" name="telefono" id="telefono" value="{%print(psel[11])%}" disabled>
                                 </div>
-                                <input type="submit" value="Guardar Cambios" id="btnGuardar" disabled hidden>
+                                <div class="bio-row">
+                                    <input type="submit" value="Guardar Cambios" id="btnGuardar" disabled hidden>
+                                </div>
+                                
                             </div> 
                         </form>
                         {% if session['id']==psel[0] %}
@@ -179,10 +188,10 @@
                                                     <tr>
                                                         <td class="action"><input type="checkbox" /></td>
                                                         
-                                                        <td class="name"><a
-                                                                href="{{url_for('perfil', codigo = msg[3]) }}">{%print(msg[1])%}</a>
+                                                        <td class="name">
+                                                            {%print(msg[1])%}
                                                         </td>
-                                                        <td class="subject">{%print(psel[1])%}</td>
+                                                        <td class="subject"><a href="{{url_for('perfil', codigo = msg[3]) }}">{%print(psel[1])%}</a></td>
                                                         <td class="time">08:30 PM</td>
                                                     </tr>
 
