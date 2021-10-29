@@ -99,7 +99,8 @@
                         <div class="post-comment">
                             <img src="../static/images/perfil/{% print(session['foto']) %}" alt="" class="profile-photo-sm">
                             <form class="flex" form action="{{url_for('addcomm', codigo = postsel[0][0])}}" method="post" enctype="multipart/form-data">
-                                    <input type= "text" name="comentario" id="comentario" placeholder="Comentar algo"></textarea>
+                                    <input type= "text" name="comentario" id="comentario" placeholder="Comentar algo">
+                                    <a for="btnEnviar" class="far fa-paper-plane"> <button type="submit" class="btnEnviar" id="btnEnviar">Enviar</button></a>    
                             </form>
                         </div>
                     </div>
