@@ -31,7 +31,7 @@ def feed():
         return redirect('login')
     else:
         usu= session['id']
-        sql ="SELECT * FROM Post order by creationDate desc limit 10"
+        sql ="SELECT * FROM Post order by creationDate desc limit 50"
         posts = selectSQLite(sql)
         sql =f'SELECT * FROM Post WHERE UserId = {usu} order by creationDate desc limit 20'
         postown = selectSQLite(sql)
@@ -206,6 +206,7 @@ def changepass():
             currentPass = request.form['password']
             newPass1 = request.form['newPass1']            
             newPass2 = request.form['newPass2']
+<<<<<<< HEAD
 
             if not check_password_hash(session['password'], currentPass):    #si la clave hash de la sesion activa no coincide con la ingresada
                 error1 = "Error al validar la contraseña actual"   #ojo, si no hay sesión activa da error
@@ -223,6 +224,25 @@ def changepass():
                 return render_template("cambiarcontrasena.html", form=form)
 
             else:
+=======
+
+            if not check_password_hash(session['password'], currentPass):    #si la clave hash de la sesion activa no coincide con la ingresada
+                error1 = "Error al validar la contraseña actual"   #ojo, si no hay sesión activa da error
+                flash(error1)
+            if newPass1 != newPass2:    #si los dos campos de nueva contraseña no coinciden
+                error1 = "Error al validar la nueva contraseña"
+                flash(error1)
+            if not isPasswordValid(newPass1):
+                error1= "La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula, sin caracteres especiales."
+                flash(error1)
+            else:
+                newPassHash = generate_password_hash(newPass1)  #genera nueva contraseña encriptada
+            if error1 is not None:
+                print(error1)
+                return render_template("cambiarcontrasena.html", form=form)
+
+            else:
+>>>>>>> ff5e7df8d652e0e6c26dda49c5935b79abc1298f
                 db = get_db()
                 sql1 = f'UPDATE User SET password = ? WHERE email = ?'
                 result = db.execute(sql1, (newPassHash, session['correo'])).rowcount
@@ -308,7 +328,19 @@ def perfil():
             idsel = request.args.get('codigo')
             sql = f'SELECT * FROM User WHERE UserId = {idsel}'
             psel = selectSQLite(sql)
+<<<<<<< HEAD
+            sql = f'SELECT * FROM Messages WHERE UserPara = {idsel} order by CreationDate desc limit 20'
+            
+            msgs = selectSQLite(sql)
+            if len(msgs)==0:
+                msgs="vacio"           
+      
+            return render_template("perfil.html", psel=psel[0], msgs=msgs)
+         
+
+=======
             return render_template("perfil.html", psel=psel[0])
+>>>>>>> ff5e7df8d652e0e6c26dda49c5935b79abc1298f
    
 @app.route('/addcomm', methods=['GET','POST'])
 def addcomm():
@@ -356,5 +388,4 @@ def selectSQLite(sql):
 if __name__ == '__main__':    
     app.run(debug=True, host='127.0.0.1', port =443)
     #, ssl_context=('micertificado.pem', 'llaveprivada.pem'))
-
 
