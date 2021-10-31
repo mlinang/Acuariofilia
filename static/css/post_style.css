@@ -57,6 +57,12 @@ estilos de NAVBar para la foto
   margin: 10px auto;
   width: 100%;
 }
+.post-comment input{
+  width: 400PX;
+}
+.post-comment .nosec{
+  border:none;
+}
 
 .post-content .post-container .post-detail .post-comment img.profile-photo-sm{
   margin-right: 10px;
@@ -67,6 +73,17 @@ estilos de NAVBar para la foto
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
   margin: 7px 0;
   min-width: 0;
+}
+.box-body{
+  width: 100%;
+}
+.box-body img{
+  max-height: 400px;
+  width: 100%;
+}
+
+.post-content{
+  width: 100%;
 }
 
 img.fotoperfil-md-left {

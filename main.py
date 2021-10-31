@@ -251,7 +251,7 @@ def restablecercontrasena():
 
 @app.route('/editProfile', methods=['POST']) #ojo... debe haber siempre una sesion activa
 def editProfile():
-    error = "ahí entró"
+    error = "Sus Datos han sido Actualizados Correctamente."
     flash(error)
     if 'id' in session:
         nombre = request.form['nombre']
@@ -308,11 +308,10 @@ def perfil():
             idsel = request.args.get('codigo')
             sql = f'SELECT * FROM User WHERE UserId = {idsel}'
             psel = selectSQLite(sql)
-            sql = f'SELECT * FROM Messages WHERE UserPara = {idsel} order by CreationDate desc limit 20'
+            sql = f'SELECT * FROM User, Messages WHERE UserDe = {idsel} AND user.UserId=Messages.UserPara order by CreationDate desc limit 20'
             msgs = selectSQLite(sql)
             if len(msgs)==0:
                 msgs="vacio"           
-      
             return render_template("perfil.html", psel=psel[0], msgs=msgs)
 
 @app.route('/addcomm', methods=['GET','POST'])
