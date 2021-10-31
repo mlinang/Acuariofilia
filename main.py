@@ -21,7 +21,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/') 
+
 @app.route('/feed')
 #@login_required
 def feed():
@@ -115,6 +115,7 @@ def postdetail():
         comPost= selectSQLite(sql)
         return render_template("postdetail.html", postsel=postsel,comPost=comPost)
 
+@app.route('/') 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
