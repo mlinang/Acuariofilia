@@ -10,16 +10,17 @@
         <link href="../static/css/search_style.css" rel="stylesheet">
         <script src="https://kit.fontawesome.com/6880bc3485.js" crossorigin="anonymous"></script>
         <link href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+        <link href='/static/img/favicon.png' rel='shortcut icon' type='image/x-icon'/>
     </head>
-    
+
 {% block body %}
     {% with mensajes = get_flashed_messages() %}
         {% if mensajes %}
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {% for mensaje in mensajes %}
                         {{mensaje}}
-                {% endfor %}                                      
-        </div>      
+                {% endfor %}
+        </div>
         {% endif %}
     {% endwith %}
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -29,7 +30,7 @@
                     <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search" hidden >
                     <button class="btn btn-outline-success bg-primary bg-dark" type="submit" hidden>Search</button>
                 </form>
-                
+
                 <div class="" id=""> <!-- falta corrgir -->
                     <div class="">
                         {% if 'id' in session %}
@@ -39,12 +40,12 @@
                         {% else %}
                             <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
                             <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
-                        {% endif %}       
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </nav>
-      
+
         <div class="container">
             <br/>
             <div class="row justify-content-center">
@@ -86,7 +87,7 @@
                         <p class="search-results-count">Cerca de 94 700 000 resultados (0.39 sec.) </p>
                         {% for pfound in Sresult %}
                             <section class="search-result-item">
-                                <a class="image-link" href="{{url_for('perfil', codigo = pfound[0]) }}"><img class="image" src="static/images/perfil/{% print(pfound[7]) %}">
+                                <a class="image-link" href="{{url_for('perfil', codigo = pfound[0]) }}"><img class="image" src="static/images/Perfil/{% print(pfound[7]) %}">
                                 </a>
                                 <div class="search-result-item-body">
                                     <div class="row">
@@ -94,7 +95,7 @@
                                             <h4 class="search-result-item-heading"><a href="{{url_for('perfil', codigo = pfound[0]) }}">{%print(pfound[1]+" "+ pfound[2])%}</a></h4>
                                             <p class="info">{%print(pfound[3])%}</p>
                                             <p class="info">{%print(pfound[4] +", Compartiendo desde: " + pfound[6])%}</p>
-                                            <p class="description">Educadora en Tecnología y DIY'er como hobbie. Me encanta la decoración del hogar, la planificación de eventos y viajar</p>
+                                            <p class="description">{%print(pfound[8])%}</p>
                                         </div>
                                         <div class="col-sm-3 text-align-center">
                                         <p class="fs-mini text-muted">2,898 publicaciones</p><a class="btn btn-primary btn-info btn-sm" href="{{url_for('perfil', codigo = pfound[0]) }}">Ver perfil</a>
@@ -105,8 +106,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </section>        
-                        {% endfor %} 
+                            </section>
+                        {% endfor %}
 
                         {% for pub in posts %}
                         {%if pub[4] != session['id']%}
@@ -114,20 +115,20 @@
                                 <h2 class="titulo">{% print(pub[2]) %}</h2>
                                 <p class="texto">{% print(pub[3]) %}</p>
                                 <a href="{{url_for('postdetail', codigo = pub[0]) }}">
-                                    <img src="static/images/post/{% print(pub[1]) %}"  alt="Card image cap">
+                                    <img src="static/images/Post/{% print(pub[1]) %}"  alt="Card image cap">
                                 <div class="botones">
                                     <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="comentario"><i class="fas fa-comment"></i> </a>
                                     {% print(pub[4]) %}
                                     <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="favoritos"><i class="fas fa-heart"></i> </a>
                                     {% print(pub[4]) %}
-        
+
                                     <button role="button" class="retweets"><i class="fas fa-trash"></i> 100</button>
-                                    
+
                                 </div>
                             </div>
                         {%endif%}
                     {% endfor %}
-              
+
                         <div class="text-align-center">
                             <ul class="pagination pagination-sm">
                                 <li class="disabled"><a href="#">Prev</a>
