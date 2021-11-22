@@ -16,8 +16,8 @@
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {% for mensaje in mensajes %}
                         {{mensaje}}
-                {% endfor %}                                      
-        </div>      
+                {% endfor %}
+        </div>
         {% endif %}
     {% endwith %}
     <script>
@@ -32,7 +32,7 @@
                 <input class="form-control me-2" type="search" name="palabra" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success bg-primary bg-dark" type="submit">Search</button>
             </form>
-            
+
             <div class="" id=""> <!-- falta corrgir -->
                 <div class="">
                     {% if 'id' in session %}
@@ -42,7 +42,7 @@
                     {% else %}
                         <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
                         <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
-                    {% endif %}       
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -59,16 +59,16 @@
             <div class="cargarimagen">
                 <div class="cajaCargar">
                     <div class="cargar">
-                        
+
                         <label for="imagen" class="far fa-images" icon> Adjuntar </label>
-                        <input class="btn btn-user btn-block" id="imagen" name="imagen" accept="image/*" type="file" multiple onChange="onLoadImage(event.target.files)">         
+                        <input class="btn btn-user btn-block" id="imagen" name="imagen" accept="image/*" type="file" multiple onChange="onLoadImage(event.target.files)">
                     </div>
                     <!-- este script es para tomar el nombre del archivo que se sube a una etiqueta,
-                         meramente estetico para que no se viera ese cuadro feo de cargar imagen, 
+                         meramente estetico para que no se viera ese cuadro feo de cargar imagen,
                          ademas si se pica en ese mismo cuadro la quita de la casilla de upload -->
                     <script>
                         function onLoadImage(files){
-                    
+
                             if (files && files[0]) {
                               document
                                 .getElementById('imgName')
@@ -78,44 +78,44 @@
                           function unLoadImage(){
                               document
                                 .getElementById('imgName')
-                                .innerHTML = (this.name).remove    
+                                .innerHTML = (this.name).remove
                           }
                     </script>
-                </div>  
+                </div>
                 <span id="imgName" onclick="unLoadImage()"></span>
                 <div class="enviar">
                     <label for="btnEnviar" class="far fa-paper-plane"> Enviar</label>
                     <button type="submit" class="btnEnviar" id="btnEnviar"></button>
                 </div>
             </div>
-        </form> 
-       
+        </form>
+
         <nav class="menu">
             <ul>
                 {% if 'id' in session %}
                     <li class="fa fa-user" > <a href="{{url_for('perfil', codigo = session['id']) }}">Mi perfil</a></li>
                     <li class="fas fa-binoculars"> <a  href="{{'search'}}">Explora</a></li>
                     <li class="far fa-envelope"> Mensajes</li>
-                    <li class="fas fa-cogs"> <a href="{{'dashboard'}}"> Administra </a></li> 
+                    <li class="fas fa-cogs"> <a href="{{'dashboard'}}"> Administra </a></li>
                 {% else %}
                     <!-- ESTE ELSE SIRVE PARA CARGAR OPCIONES DE ADMINS Y SUP ADMINS
-                        
+
                     <li class="fas fa-home " > <a href="{{'perfil'}}">Inicio</a></li>
                     <li class="fas fa-binoculars"> <a  href="{{'search'}}">Explora</a></li>
                     <li class="fas fa-cogs"> <a href="{{'Dasboard'}}"> Administra </a></li -->
-                {% endif %} 
-                 
+                {% endif %}
+
             </ul>
         </nav>
         <div class="novedades">
-            <h1>Novedades</h1>  
-            {% for pub in posts %}
+            <h1>Novedades</h1>
+            {% for pub in posts|reverse %}
                 {%if pub[4] != session['id']%}
                     <div class="novedad">
                         <h2 class="titulo">{% print(pub[2]) %}</h2>
                         <p class="texto">{% print(pub[3]) %}</p>
                         <a href="{{url_for('postdetail', codigo = pub[0]) }}">
-                            <img src="static/images/post/{% print(pub[1]) %}"  alt="Card image cap">
+                            <img src="../static/images/Post/{% print(pub[1]) %}"  alt="Card image cap">
                         <div class="botones">
                             <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="comentario"><i class="fas fa-comment"></i> </a>
                             {% print(pub[4]) %}
@@ -127,7 +127,7 @@
                     </div>
                 {%endif%}
             {% endfor %}
-        </div>  
+        </div>
 
         <div class="developerteam">
             <h3>@grupo 10</h3>
@@ -139,7 +139,7 @@
                     {% for pub in postown %}
                         <div class="imagen-publicada">
                             <a href="{{url_for('postdetail', codigo = pub[0]) }}">
-                                <img src="static/images/post/{% print(pub[1]) %}"  alt="Card image cap">
+                                <img src="../static/images/Post/{% print(pub[1]) %}"  alt="Card image cap">
                             </a>
                             <div class="botones">
                                 <a role="enlace" href="{{url_for('postdetail', codigo = pub[0]) }}" class="comentario"><i class="fas fa-comment"></i> </a>
@@ -148,7 +148,7 @@
                                 {% print(pub[4]) %}
                             </div>
                         </div>
-                    {% endfor %}  
+                    {% endfor %}
             </div>
         </main>
     </div>
