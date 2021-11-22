@@ -6,6 +6,7 @@
         <link href="../static/css/post_style.css" rel="stylesheet">
         <script src="https://kit.fontawesome.com/6880bc3485.js" crossorigin="anonymous"></script>
         <link href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+        <link href='/static/img/favicon.png' rel='shortcut icon' type='image/x-icon'/>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -25,14 +26,14 @@
                         <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
                     </div>
                     <div class="av-user-icon">
-                        <a href="{{url_for('perfil', codigo = session['id']) }}"><img src="../static/images/perfil/{% print(session['foto']) %}" alt="user" class="fotoperfil-md-left"></a>
+                        <a href="{{url_for('perfil', codigo = session['id']) }}"><img src="../static/images/Perfil/{% print(session['foto']) %}" alt="user" class="fotoperfil-md-left"></a>
                     </div>
 
             {% else %}
-                    <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
+                    <span class="navbar-text p-2 bd-highlight"> <a href="{{'Login'}}">Login</a> </span>
                     <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
                 </div>
-            {% endif %}       
+            {% endif %}
             </div>
         </nav>
         {% with messages = get_flashed_messages() %}
@@ -53,7 +54,7 @@
                     $(flash).parent().remove()
                 }
                 function habcomet() {
-                   
+
                 }
             </script>
 
@@ -63,49 +64,49 @@
               <div class="box box-widget">
                 <div class="box-header with-border">
                   <div class="user-block">
-                    <a href="{{url_for('perfil', codigo = session['id']) }}"><img class="fotoperfil-md-left" src="../static/images/perfil/{% print(postsel[0][15]) %}" alt="User Image">
+                    <a href="{{url_for('perfil', codigo = session['id']) }}"><img class="fotoperfil-md-left" src="../static/images/Perfil/{% print(postsel[0][15]) %}" alt="User Image">
                     <span class="username"><a href="{{url_for('perfil', codigo = postsel[0][4]) }}">{% print(postsel[0][7]+ " " +postsel[0][8]) %}.</a></span>
                     <span class="description">Publicacion compartida el {% print(postsel[0][3]) %}</span>
                   </div>
                 </div>
                 <div class="box-body" style="display: block;">
-                    <img src="../static/images/post/{% print(postsel[0][1]) %}" class="img-fluid" alt="Responsive image">
+                    <img src="../static/images/Post/{% print(postsel[0][1]) %}" class="img-fluid" alt="Responsive image">
                     <p>{% print(postsel[0][2]) %}</p>
 
                     <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
                     <span class="pull-right text-muted">127 likes - 3 comments</span>
                     {% if session['id']==postsel[0][4] or session['rol']== 1 %}
                         <a button type="submit" id=btdel href="{{url_for('deletePost', codigo = postsel[0][0]) }}">Eliminar publicación<i class="trash-alt btn-sm mb-5"></i></a> <!--error debido a usuario eliminado -->
-                    {% endif %} 
+                    {% endif %}
                 </div>
-            
+
             <div class="post-content ">
                 <div class="post-container">
-                    
+
                     <div class="post-detail">
-                        
+
                     {% for com in comPost %}
                     <div class="box-comment">
                         <div class="post-comment" id="{{ com[0] }}">
-                            <a href="{{url_for('perfil', codigo = com[3]) }}" class="profile-link"><img src="../static/images/perfil/{% print(com[14]) %}" alt="" class="profile-photo-sm"></a>
-                            <p><a href="{{url_for('perfil', codigo = com[3]) }}" class="profile-link">{% print(com[6]) %} {% print(com[7]) %} <br></a> 
+                            <a href="{{url_for('perfil', codigo = com[3]) }}" class="profile-link"><img src="../static/images/Perfil/{% print(com[14]) %}" alt="" class="profile-photo-sm"></a>
+                            <p><a href="{{url_for('perfil', codigo = com[3]) }}" class="profile-link">{% print(com[6]) %} {% print(com[7]) %} <br></a>
                                 <input type="text" class="nosec" value="{% print(com[1]) %}" disabled>    </p>
                             {% if session['id']==com[5] or session['rol']== 1 %}
                                 <a href="{{url_for('deleteComm', codigo = com[0], postId=com[2]) }}"><br> <ul> Borrrar<i class="far fa-trash mb-1"></i></a></ul>
-                            {% endif %} 
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
                         <div class="post-comment">
-                            <img src="../static/images/perfil/{% print(session['foto']) %}" alt="" class="profile-photo-sm">
+                            <img src="../static/images/Perfil/{% print(session['foto']) %}" alt="" class="profile-photo-sm">
                             <form class="flex" form action="{{url_for('addcomm', codigo = postsel[0][0])}}" method="post" enctype="multipart/form-data">
                                     <input type= "text" name="comentario" id="comentario" placeholder="Comentar algo">
-                                    <a for="btnEnviar" class="far fa-paper-plane"> <button type="submit" class="btnEnviar" id="btnEnviar">Enviar</button></a>    
+                                    <a for="btnEnviar" class="far fa-paper-plane"> <button type="submit" class="btnEnviar" id="btnEnviar">Enviar</button></a>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </body>    
+    </body>
 </html>
