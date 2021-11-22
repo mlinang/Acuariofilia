@@ -14,6 +14,7 @@
     <link href="../static/css/styleperfil.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/6880bc3485.js" crossorigin="anonymous"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='/static/img/favicon.png' rel='shortcut icon' type='image/x-icon'/>
 </head>
 {% block body %}
     {% with mensajes = get_flashed_messages() %}
@@ -55,7 +56,7 @@
             let status= document.getElementById("myForm").hidden;
             if (status==false)
                 document.getElementById("myForm").hidden= true;
-            else 
+            else
                 document.getElementById("myForm").hidden= false
 
         }
@@ -76,11 +77,11 @@
                 <div class="infoPerfil">
                     {% if 'id' in session %}
                     <a  href="{{url_for('perfil', codigo = session['id']) }}">
-                        <img src="../static/images/perfil/{% print(psel[9]) %}" alt="">
+                        <img src="../static/images/Perfil/{% print(psel[9]) %}" alt="">
                     </a>
                     <span class="navbar-text p-2 bd-highlight"> {{ session['fullname'] }} </span>
                     <!-- hay un bug en el logout realmente no cierra la sesion -->
-                    <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Logout</a> </span>
+                    <span class="navbar-text p-2 bd-highlight"> <a href="{{'logout'}}">Logout</a> </span>
                     {% else %}
                     <span class="navbar-text p-2 bd-highlight"> <a href="{{'login'}}">Login</a> </span>
                     <!-- <span class="navbar-text p-2 bd-highlight"> <a href="{{'registro'}}">Registro</a> </span> -->
@@ -93,10 +94,28 @@
             <div class="row">
                 <div class="profile-nav col-md-3">
                     <div class="panel">
-                        <div class="user-heading round">
-                            <a href="#">
-                                <img src="../static/images/perfil/{% print(psel[9]) %}" alt="">
-                            </a>
+                        <form class= "fotoPerfil" form action="{{url_for('addProfilePic')}}" method="post" enctype="multipart/form-data">
+                            <div class="user-heading round">
+                                <a href="#">
+                                    <img src="../static/images/Perfil/{% print(psel[9]) %}" alt="">
+                                    <!--<label for="btnLoad" class="fa fa-pen">Cambiar</label> -->
+                                    {% if session['id']==psel[0] %}
+                                    <input class="btn btn-user btn-block" id="imagen" name="imagen" accept="image/*" type="file" multiple onChange="onLoadImage(event.target.files)" id="btnLoad">
+                                    <!-- <span id="imgName" onclick="unLoadImage()"></span> -->
+                                    <!-- <label for="btnEnviar" class="fa fa-pen">Subir</label> -->
+                                    <button type="submit" class="btnEnviar" id="btnEnviar">Subir</button>
+                                    {% endif %}
+                                </a>
+                            <script>
+                                function onLoadImage(files){
+                                    if (files && files[0]) {
+                                      document
+                                        .getElementById('imgName')
+                                        .innerHTML = files[0].name
+                                    }
+                                  }
+                            </script>
+                        </form>
                             <h1>{%print(psel[1]+" "+ psel[2])%}</h1>
                             <p>{%print(psel[3])%}</p>
                             <h2>{%print(psel[12])%}</h2>
@@ -106,9 +125,9 @@
                             <ul class="nav nav-pills nav-stacked">
                                 <li class="active"><a href="{{'feed'}}"> <i class="fas fa-home"></i>Inicio</a></li>
                                 {% if session['id']==psel[0] %}
-                                  
+
                                     <li><a onclick="habilitarCampos()"><i class="fa fa-pencil" ></i>Editar Perfil</a></li>
-                                    
+
                                 {% endif %}
                                 {% if session['rol']==1 %}
                                     <li><a href="{{url_for('makeAdmin', userId = psel[0] ) }}"> <i class="fa fa-edit"></i> Ascender a administrador</a></li>
@@ -117,11 +136,14 @@
                                     <li><a href="{{url_for('deleteUser', userId = psel[0] ) }}"> <i class="fa fa-user-times"></i> Borrar Perfil</a></li>
                                 {% endif %}
                                 <li><a onclick="openForm()"> <i class="fa fa-envelope"></i>Send Message</a></li>
-                                {% if session['id']!=psel[0] %}
-                                    
-                                
+                                {% if session['id']==psel[0] %}
+                                    <li><a href="{{'cambiarcontrasena'}}"><i class="fa fa-key" ></i>Cambiar contraseña</a></li>
                                 {% endif %}
-                                
+                                {% if session['id']!=psel[0] %}
+
+
+                                {% endif %}
+
                             </ul>
                             <div class="chat-popup" id="myForm"  hidden>
                                 <form class="form-container" form action="{{url_for('sendmes', codigo = psel[0])}}" method="post"
@@ -139,7 +161,7 @@
 
                     <div class="panel">
                         <form class="datosPersonales" form action="{{ url_for('editProfile') }}" method="post" enctype="multipart/form-data">
-                            <h1>Informacion personal</h1> 
+                            <h1>Informacion personal</h1>
                             <div class="row">
                                     <div class="bio-row">
                                         <label for="nombre">Nombre </label>
@@ -172,8 +194,8 @@
                                     <div class="bio-row">
                                         <input type="submit" value="Guardar Cambios" id="btnGuardar"disabled hidden >
                                     </div>
-                                    
-                                </div> 
+
+                                </div>
                         </form>
                         {% if session['id']==psel[0] %}
                             <div class="panel-body bio-graph-info">
@@ -187,7 +209,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="action"><input type="checkbox" /></td>
-                                                        
+
                                                         <td class="name">
                                                             {%print(msg[15])%}
                                                         </td>
