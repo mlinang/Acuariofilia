@@ -11,6 +11,7 @@
 
     <title>Login Acuariofilia</title>
     <link href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href='/static/img/favicon.png' rel='shortcut icon' type='image/x-icon'/>
     <!--sb-admin-2.min  login_style -->
 </head>
 {% block contenido %}
@@ -20,8 +21,8 @@
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {% for mensaje in mensajes %}
                 {{mensaje}}
-        {% endfor %}                                      
-</div>      
+        {% endfor %}
+</div>
 {% endif %}
 {% endwith %}
 <script>
@@ -59,17 +60,17 @@ function delete_flash(flash) {
                                             {{ form.csrf_token }}
                                             <div class="form-group">
                                                 {{ form.email(class_="form-control form-control-user") }}
-                                                    
+
                                             </div>
                                             <div class="form-group">
                                                 {{ form.password(class_="form-control form-control-user") }}
-                                                   
+
                                             </div>
                                             {% with mensajes = get_flashed_messages() %}
                                                 {% if mensajes %}
                                                     {% for mensaje in mensajes %}
                                                         {{mensaje}}
-                                                    {% endfor %}                                      
+                                                    {% endfor %}
                                                 {% endif %}
                                             {% endwith %}
                                             <input type="submit" id="Iniciar sesión" value="Iniciar sesión" href="/feed"
