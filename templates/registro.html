@@ -11,6 +11,7 @@
 
     <title>Acuariofilia - Registra</title>
     <link href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href='/static/img/favicon.png' rel='shortcut icon' type='image/x-icon'/>
 </head>
 
 {% block contenido %}
@@ -19,8 +20,8 @@
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {% for mensaje in mensajes %}
                     {{mensaje}} <br>
-            {% endfor %}                                      
-    </div>      
+            {% endfor %}
+    </div>
     {% endif %}
     {% endwith %}
     <script>
@@ -28,7 +29,7 @@
         $(flash).parent().remove()
     }
     </script>
-    
+
     <body class="bg-gradient-primary">
         <div class="container">
             <!-- Outer Row -->
@@ -40,25 +41,25 @@
                             <div class="row">
                                 <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
                                 <div class="col-lg-6">
-                                    
+
                                     <div class="p-5">
-                                        
+
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4">Acuariofilia - Registro</h1>
                                         </div>
                                         <form action="{{ url_for('registro') }}" method="post" enctype="multipart/form-data">
-                                            {{form.csrf_token}} 
+                                            {{form.csrf_token}}
                                             <hr>
                                             <div class="form-group">
                                                 <h1 class="h6 text-gray-900 mb-4"></h1>
-                                                    {{ form.firstname(class_="form-control form-control-user") }}                                                   
+                                                    {{ form.firstname(class_="form-control form-control-user") }}
                                                 <h1 class="h6 text-gray-900 mb-4"></h1>
                                                     {{ form.lastname(class_="form-control form-control-user") }}
                                                 <br>
                                                 <h1 class="h6 text-gray-900 ">Genero:  {{ form.gender(class_="form-select form-control form-control-user  ") }} </h1>
-                                                
+
                                                 <h1 class="h6 text-gray-900 ">Fecha de nacimiento {{ form.Birthdate(class_='datepicker') }} </h1>
-                                                
+
                                                 <br>
                                                 {{ form.email(class_='form-control form-control-user p-10') }}
                                                 <br>
@@ -68,7 +69,7 @@
                                             </div>
                                             <hr>
                                             <input id="enviar" type="submit" value="Enviar"  class="btn btn-primary btn-user btn-block">
-                                            
+
                                         </form>
                                         <hr>
                                         <a href="login" class="btn btn-success btn-user btn-block">
@@ -76,7 +77,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
